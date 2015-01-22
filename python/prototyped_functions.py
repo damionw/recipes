@@ -10,37 +10,43 @@ class prototype(object):
     def __init__(self, **prototype):
         self._prototype = prototype
 
-    @staticmethod
-    def get_type_spec(prototype):
-        for _key, _type in prototype.iteritems():
-            if type(_type) == type:
-                yield _key, _type
-            elif type(_type) == tuple:
-                yield _key, _type[0]
-            else:
-                raise Exception("Type specification '%s' must be either a single type or a tuple" % (_key))
+    @classmethod
+    def format_specification_elements(cls, prototype):
+        for parameter_name, parameter_spec in prototype.iteritems():
+            parameter_type = type(parameter_spec)
 
-    @staticmethod
-    def get_value_spec(prototype):
-        for _key, _type in prototype.iteritems():
-            if type(_type) == type:
-                yield _key, None
+            if parameter_type == type:
+                parameter_spec = (parameter_spec, None)
+            elif parameter_type in {tuple, list}:
+                pass
             else:
-                yield _key, _type[1]
+                raise Exception("Type specification for '%s' must be either a single type or a tuple, not %s" % (parameter_name, parameter_type))
+
+            yield parameter_name, parameter_spec
+
+    @classmethod
+    def get_type_spec(cls, prototype):
+        return (
+            (_name, _type) for _name, (_type, _values) in cls.format_specification_elements(prototype)
+        )
+
+    @classmethod
+    def get_value_spec(cls, prototype):
+        return (
+            (_name, _values) for _name, (_type, _values) in cls.format_specification_elements(prototype)
+        )
 
     def __call__(self, fn):
         function_key = (fn.__module__, fn.__name__)
 
-        collection = self._registry.setdefault(function_key, [])
-
-        signature_definition = [
-            fn,
-            getargspec(fn),
-            dict(self.get_type_spec(self._prototype)),
-            dict(self.get_value_spec(self._prototype)),
-        ]
-
-        collection.append(signature_definition)
+        self._registry.setdefault(function_key, []).append(
+            (
+                fn,
+                getargspec(fn),
+                dict(self.get_type_spec(self._prototype)),
+                dict(self.get_value_spec(self._prototype)),
+            )
+        )
 
         return lambda *args, **kwargs: self.handler(function_key, args, kwargs)
 
