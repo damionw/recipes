@@ -29,9 +29,9 @@ class prototype(object):
                 yield _key, _type[1]
 
     def __call__(self, fn):
-        function_name = fn.__name__
+        function_key = (fn.__module__, fn.__name__)
 
-        collection = self._registry.setdefault(function_name, [])
+        collection = self._registry.setdefault(function_key, [])
 
         signature_definition = [
             fn,
@@ -42,11 +42,11 @@ class prototype(object):
 
         collection.append(signature_definition)
 
-        return lambda *args, **kwargs: self.handler(function_name, args, kwargs)
+        return lambda *args, **kwargs: self.handler(function_key, args, kwargs)
 
     @staticmethod
-    def handler(function_name, args, kwargs):
-        for fn, spec, _prototype, _permissible_values in prototype._registry[function_name]:
+    def handler(function_key, args, kwargs):
+        for fn, spec, _prototype, _permissible_values in prototype._registry[function_key]:
             parameter_names = spec.args
 
             # Capture the parameters and their defaults
@@ -97,7 +97,7 @@ class prototype(object):
                 # All values were found to be permissible, so call the function
                 return fn(**instance_parameters)
 
-        raise NotImplementedError("Function '%s' cannot be found with the expressed signature" % (function_name))
+        raise NotImplementedError("Function '%s' cannot be found with the expressed signature" % (":".join(function_key)))
 
 @prototype(one=int, two=int, x=str)
 def mine(x, one=1, two=0):
