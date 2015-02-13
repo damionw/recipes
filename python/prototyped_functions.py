@@ -1,11 +1,14 @@
 #! /usr/bin/env python
 
-from inspect import getargspec
+#! /usr/bin/env python
+
+from inspect import getargspec, stack
 from collections import OrderedDict
 from itertools import izip
+from functools import wraps
 
 class prototype(object):
-    _registry = {}
+    _registry_collection = {}
 
     def __init__(self, **prototype):
         self._prototype = prototype
@@ -39,7 +42,18 @@ class prototype(object):
     def __call__(self, fn):
         function_key = (fn.__module__, fn.__name__)
 
-        self._registry.setdefault(function_key, []).append(
+        # Determine the scope to use
+        stack_info = stack()
+        filename = stack_info[1][1]
+        keydata = [_x[3] for _x in stack_info[1:] if _x[1] == filename] + [filename]
+
+        scope_key = "".join(
+            "%x" % ord(_x) for _x in "".join(map(str, reversed(keydata)))
+        )
+
+        registry = self._registry_collection.setdefault(scope_key, {})
+
+        registry.setdefault(function_key, []).append(
             (
                 fn,
                 getargspec(fn),
@@ -48,11 +62,13 @@ class prototype(object):
             )
         )
 
-        return lambda *args, **kwargs: self.handler(function_key, args, kwargs)
+        new_function = lambda *args, **kwargs: self.handler(function_key, registry, args, kwargs)
+
+        return wraps(fn)(new_function)
 
     @staticmethod
-    def handler(function_key, args, kwargs):
-        for fn, spec, _prototype, _permissible_values in prototype._registry[function_key]:
+    def handler(function_key, registry, args, kwargs):
+        for fn, spec, _prototype, _permissible_values in registry[function_key]:
             parameter_names = spec.args
 
             # Capture the parameters and their defaults
@@ -81,7 +97,9 @@ class prototype(object):
 
             # Get the types of each parameter
             instance_prototype = {
-                _key: type(_value) for _key, _value in instance_parameters.iteritems()
+                _key: _value if type(_value) == type else type(_value)
+                for _key, _value
+                in instance_parameters.iteritems()
             }
 
             # Not a candidate if the type signatures don't match
@@ -103,7 +121,13 @@ class prototype(object):
                 # All values were found to be permissible, so call the function
                 return fn(**instance_parameters)
 
-        raise NotImplementedError("Function '%s' cannot be found with the expressed signature" % (":".join(function_key)))
+        raise NotImplementedError(
+            "Function '%s' cannot be found with the expressed signature (%s, %s)" % (
+                ":".join(function_key),
+                args,
+                kwargs,
+            )
+        )
 
 @prototype(one=int, two=int, x=str)
 def mine(x, one=1, two=0):
