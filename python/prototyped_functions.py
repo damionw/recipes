@@ -47,17 +47,17 @@ class prototype(object):
                 if row[1] != filename:
                     break
 
+                if row[3].startswith("<"):
+                    continue
+
                 yield row[3]
 
             yield filename
 
-        def get_scope_key_characters(stack_info):
-            for element in reversed(map(str, get_scope_key_elements(stack_info))):
-                for character in element:
-                    yield "%x" % ord(character)
-
         # Determine the function scope
-        scope_key = "".join(get_scope_key_characters(stack()))
+        scope_key = ".".join(
+            reversed(map(str, get_scope_key_elements(stack())))
+        )
 
         # Determine the function key
         function_key = (fn.__module__, fn.__name__)
@@ -241,3 +241,4 @@ def outer():
     return middle()
 
 outer()
+
