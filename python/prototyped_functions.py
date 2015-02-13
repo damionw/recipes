@@ -40,17 +40,29 @@ class prototype(object):
         )
 
     def __call__(self, fn):
+        def get_scope_key_elements(stack_info):
+            filename = stack_info[1][1]
+
+            for row in stack_info[1:]:
+                if row[1] != filename:
+                    break
+
+                yield row[3]
+
+            yield filename
+
+        def get_scope_key_characters(stack_info):
+            for element in reversed(map(str, get_scope_key_elements(stack_info))):
+                for character in element:
+                    yield "%x" % ord(character)
+
+        # Determine the function scope
+        scope_key = "".join(get_scope_key_characters(stack()))
+
+        # Determine the function key
         function_key = (fn.__module__, fn.__name__)
 
-        # Determine the scope to use
-        stack_info = stack()
-        filename = stack_info[1][1]
-        keydata = [_x[3] for _x in stack_info[1:] if _x[1] == filename] + [filename]
-
-        scope_key = "".join(
-            "%x" % ord(_x) for _x in "".join(map(str, reversed(keydata)))
-        )
-
+        # The function registry used is dependent on the scope
         registry = self._registry_collection.setdefault(scope_key, {})
 
         registry.setdefault(function_key, []).append(
@@ -62,9 +74,9 @@ class prototype(object):
             )
         )
 
-        new_function = lambda *args, **kwargs: self.handler(function_key, registry, args, kwargs)
-
-        return wraps(fn)(new_function)
+        return wraps(fn)(
+            lambda *args, **kwargs: self.handler(function_key, registry, args, kwargs)
+        )
 
     @staticmethod
     def handler(function_key, registry, args, kwargs):
@@ -138,6 +150,7 @@ def mine(a):
     print "NOT", a
 
 print
+print "=============="
 print "Mixed type specifications ..."
 
 mine(2.2) # a is a float
@@ -156,6 +169,7 @@ except NotImplementedError, _exception:
     print repr(_exception)
 
 print
+print "=============="
 print "We do value checking too ..."
 
 @prototype(value=(int, {1,2,3}))
@@ -181,6 +195,7 @@ ranges(5, name="BOB")
 
 
 print
+print "=============="
 print "Cascading calls ..."
 
 @prototype(name=str)
@@ -202,3 +217,27 @@ start_service("fred")
 print
 
 start_service("fred", args=[1,2,3])
+
+print
+print "=============="
+print "Nested functions"
+
+def outer():
+    def middle():
+        @prototype(value=(int, [1,6,2]))
+        def two(value):
+            print "Value", value, "is an integer in range"
+
+        @prototype(value=int)
+        def two(value):
+            print "Value", value, "is an integer"
+
+        @prototype(value=str)
+        def two(value):
+            print "Value", value, "is a string"
+
+        map(two, range(6) + ["whee"])
+
+    return middle()
+
+outer()
