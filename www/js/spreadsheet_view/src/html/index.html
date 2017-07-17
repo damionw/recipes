@@ -1,0 +1,32 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+
+        <link rel="stylesheet" href="/static/Grid.css" media="screen">
+
+        <script type="application/javascript" language="javascript" src="/static/ajax.js"></script>
+        <script type="application/javascript" language="javascript" src="/static/d3.min.js"></script>
+        <script type="application/javascript" language="javascript" src="/static/Grid.js"></script>
+        <script type="application/javascript" language="javascript" src="/static/SpreadSheet.js"></script>
+
+        <style>
+            .whatever {
+                width: 98vw;
+                height: 400px;
+                margin: 0px;
+                border: 2px solid black;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="tasks" class="whatever">
+        </div>
+
+        <script>
+            var sheet = new SpreadSheet("#tasks");
+        </script>
+    </body>
+</html>

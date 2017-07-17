@@ -1,0 +1,11 @@
+#! /usr/bin/env bash
+
+echo "["
+sep=
+
+for ((i=0; i < 25; ++i)) {
+    echo "${sep}{\"name\": \"i\", \"value\": \"$i\"}"
+    sep=","
+}
+
+echo "]"
