@@ -377,9 +377,9 @@ showhelp()
 #       will cause the first non option parameter to be discarded. Here, we just
 #       use -h (help)
 #===================================================================================
-long_options="static:,help,port:"
+long_options="api:,static:,help,port:"
 
-OPTION_TEMP=$(getopt -a -o hs:p: --long ${long_options} -- "$@")
+OPTION_TEMP=$(getopt -a -o ha:s:p: --long ${long_options} -- "$@")
 
 if [ $? != 0 ]
 then
