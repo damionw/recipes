@@ -1,4 +1,5 @@
 function MyClass(selector) {
+    console.log("Instatiated base class");
     this.d3_reference = d3.select(selector);
     this.x = 0;
     this.init();
@@ -26,3 +27,14 @@ MyClass.prototype.update = function() {
 }
 
 window.MyClass = MyClass;
+
+function MyDerivedClass(selector) {
+    MyClass.call(this, selector);
+    
+    console.log("Instatiated subclass");
+}
+
+MyDerivedClass.prototype.init = function() {
+}
+
+window.MyDerivedClass = MyDerivedClass;
