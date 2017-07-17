@@ -2,7 +2,7 @@
 
 all: build/static/d3.min.js build/bin/webserve
 
-demo: 
+demo: all
 	build/bin/webserve --static=build/static
 
 build:
