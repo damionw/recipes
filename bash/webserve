@@ -324,7 +324,11 @@ http::url_mappings() {
     url::add_handler '^\/$' GET http::response_index
     url::add_handler '^\/index.html$' GET http::response_index
     url::add_handler '^\/static\/.*$' GET http::response_file
-    url::add_handler '^\/api\/.*$' GET http::response_script
+
+    if [ -n "${_SERVER_API}" -a -d "${_SERVER_API}" ]
+    then
+        url::add_handler '^\/api\/.*$' GET http::response_script\
+    fi
 }
 
 #===================================================================================
@@ -373,7 +377,7 @@ showhelp()
 #       will cause the first non option parameter to be discarded. Here, we just
 #       use -h (help)
 #===================================================================================
-long_options="static,help,port:"
+long_options="static:,help,port:"
 
 OPTION_TEMP=$(getopt -a -o hp: --long ${long_options} -- "$@")
 
@@ -393,7 +397,7 @@ eval set -- "$OPTION_TEMP"
 #===================================================================================
 export _SERVER_SCRIPT="${BASH_SOURCE[0]}"
 export _SERVER_STATIC="$(dirname "${SERVER_SCRIPT}")"
-export _SERVER_API="$(dirname "${SERVER_SCRIPT}")"
+export _SERVER_API=
 
 listener_port=$(tcp::get_unused_port)
 
