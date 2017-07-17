@@ -327,7 +327,7 @@ http::url_mappings() {
 
     if [ -n "${_SERVER_API}" -a -d "${_SERVER_API}" ]
     then
-        url::add_handler '^\/api\/.*$' GET http::response_script\
+        url::add_handler '^\/api\/.*$' GET http::response_script
     fi
 }
 
@@ -379,7 +379,7 @@ showhelp()
 #===================================================================================
 long_options="static:,help,port:"
 
-OPTION_TEMP=$(getopt -a -o hp: --long ${long_options} -- "$@")
+OPTION_TEMP=$(getopt -a -o hs:p: --long ${long_options} -- "$@")
 
 if [ $? != 0 ]
 then
