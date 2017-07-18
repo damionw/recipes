@@ -2,9 +2,10 @@
 
 all: build build/static/d3.min.js build/bin/webserve
 	@cp src/js/* src/html/* build/static/.
+	@cp src/bin/* build/bin/.
 
 demo: all
-	build/bin/webserve --static=build/static --api=build/bin --port=10007
+	build/bin/runner "build/bin/webserve --static=build/static --api=build/bin --port=10007" build
 
 build:
 	@install -d build/bin build/static
