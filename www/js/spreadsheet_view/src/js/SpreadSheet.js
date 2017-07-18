@@ -11,7 +11,7 @@ SpreadSheet.prototype.onSelect = function(toSelect, toRemove, undefined) {
 
 SpreadSheet.prototype.refresh = function() {
     var handle_selection = this.onSelect;
-    var element = this.d3element.node();
+    var self = this;
 
     ajaxFunction(
         "/api/getdata",
@@ -40,7 +40,7 @@ SpreadSheet.prototype.refresh = function() {
             };
 
             var grid_reference = new Grid(
-                element, {
+                self.d3element.node(), {
                     srcType: "json", 
                     srcData: grid_contents, 
                     allowGridResize: true, 
