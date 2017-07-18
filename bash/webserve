@@ -75,6 +75,11 @@ header::content_length() {
     test "${1:-0}" -gt 0 && response::add_header "Content-Length: ${1}"
 }
 
+header::access_control() {
+    response::add_header "Access-Control-Allow-Headers: ${1}"
+    response::add_header "Access-Control-Allow-Origin: ${1}"
+}
+
 #===================================================================================
 #                                TCP/IP
 #===================================================================================
@@ -197,6 +202,7 @@ http::response_javascript() {
     response::set_status 200 "HTTP/1.1"
     header::server_type
     header::application_javascript
+    header::access_control '*'
     response::send
 }
 
@@ -246,6 +252,7 @@ http::response_file() {
             header::server_type
             header::content_type "$(file -b --mime-type "${_filename}")"
             header::content_length "$(stat -c'%s' "${_filename}")"
+            header::access_control '*'
             response::send
             ;;
     esac < "${_filename}"

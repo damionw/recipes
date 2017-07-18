@@ -71,6 +71,8 @@ function ajaxFunction(url, result_callback, error_callback, method, data){
 
     ajaxRequest.open(method, url, true); // Don't forget to escape() query string values
     ajaxRequest.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT")
+    // ajaxRequest.setRequestHeader('Access-Control-Allow-Headers', '*');
+    // ajaxRequest.setRequestHeader('Access-Control-Allow-Origin', '*');
 
     if (method == "POST") {
         ajaxRequest.setRequestHeader("Content-type", "application/json;charset=UTF-8");
