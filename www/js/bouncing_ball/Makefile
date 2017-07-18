@@ -1,6 +1,6 @@
 .PHONY: clean
 
-all: build build/static/d3.min.js build/bin/webserve
+all: build build/static/d3.min.js build/bin/webserve build/bin/runner
 	@cp src/js/* src/html/* build/static/.
 	@cp src/bin/* build/bin/.
 
@@ -12,6 +12,9 @@ build:
 
 checkouts:
 	@mkdir checkouts
+
+build/bin/runner: build checkouts/recipes
+	@cp checkouts/recipes/bash/monitored_runner $@
 
 build/bin/webserve: build checkouts/recipes
 	@cp checkouts/recipes/bash/$(notdir $@) $@

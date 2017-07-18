@@ -2,7 +2,8 @@
 
 all: build build/static/d3.min.js \
 	build/static/Grid.js build/static/Grid.css \
-	build/bin/webserve build/static/ajax.js
+	build/bin/webserve build/static/ajax.js \
+	build/bin/runner
 	@cp src/js/* src/html/* build/static/.
 	@cp src/api/* src/bin/* build/bin/.
 
@@ -23,6 +24,9 @@ build/static/Grid.css: build checkouts/Grid
 
 build/static/ajax.js: build checkouts/recipes
 	@cp checkouts/recipes/www/js/ajax/$(notdir $@) $@
+
+build/bin/runner: build checkouts/recipes
+	@cp checkouts/recipes/bash/monitored_runner $@
 
 build/bin/webserve: build checkouts/recipes
 	@cp checkouts/recipes/bash/$(notdir $@) $@

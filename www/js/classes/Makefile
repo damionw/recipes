@@ -1,6 +1,6 @@
 .PHONY: clean
 
-all: build/static/d3.min.js build/bin/webserve
+all: build/static/d3.min.js build/bin/webserve build/bin/runner
 	@cp src/js/* src/html/* build/static/.
 	@cp src/bin/* build/bin/.
 
@@ -15,6 +15,9 @@ checkouts:
 
 build/static/d3.min.js: build
 	@curl -q -s https://d3js.org/d3.v4.min.js -o $@
+
+build/bin/runner: build checkouts/recipes
+	@cp checkouts/recipes/bash/monitored_runner $@
 
 build/bin/webserve: checkouts/recipes
 	@cp checkouts/recipes/bash/$(notdir $@) $@
