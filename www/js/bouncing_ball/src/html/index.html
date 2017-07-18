@@ -1,0 +1,31 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <title></title>
+
+        <script type="application/javascript" language="javascript" src="/static/d3.min.js"></script>
+        <script type="application/javascript" language="javascript" src="/static/Ball.js"></script>
+
+        <style>
+            body, html {
+            }
+
+            #myCanvas {
+                width: 95vw;
+                height: 95vh;
+                background: "yellow";
+                border: 2px solid black;
+            }
+        </style>
+    </head>
+
+    <body>
+        <svg id="myCanvas" width=500 height=500 tabindex="1">
+        </svg>
+
+        <script>
+            var obj = new Ball("#myCanvas");
+        </script>
+    </body>
+</html>
