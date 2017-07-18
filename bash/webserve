@@ -317,7 +317,7 @@ http::run_server() {
 
     logging::info "Starting webserver on port ${_port} with static folder '${_SERVER_STATIC}'"
 
-    exec ncat -l ${_port} -k --sh-exec "'${_shell}' -c '. ${_SERVER_SCRIPT}; http::handle_request'"
+    exec ncat -l ${_port} -k --sh-exec "'${_shell}' -c '. \"${_SERVER_SCRIPT}\"; http::handle_request'"
 }
 
 http::url_mappings() {
