@@ -4,8 +4,9 @@ all: build build/static/d3.min.js \
 	build/static/Grid.js build/static/Grid.css \
 	build/bin/webserve build/static/ajax.js \
 	build/bin/runner
-	@cp src/js/* src/html/* build/static/.
-	@cp src/api/* src/bin/* build/bin/.
+	@cp src/js/* build/static/.
+	@cp src/html/* build/static/.
+	@cp src/api/* build/bin/.
 
 demo: all
 	build/bin/runner "make; exec build/bin/webserve --static=build/static --api=build/bin --port=10007" src

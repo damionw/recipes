@@ -1,8 +1,8 @@
 .PHONY: clean
 
 all: build build/static/d3.min.js build/bin/webserve build/bin/runner
-	@cp src/js/* src/html/* build/static/.
-	@cp src/bin/* build/bin/.
+	@cp src/js/* build/static/.
+	@cp src/html/* build/static/.
 
 demo: all
 	build/bin/runner "make; exec build/bin/webserve --static=build/static --port=10007" src
