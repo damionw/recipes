@@ -1,0 +1,66 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <title>VSplitter Demo</title>
+
+        <script type="application/javascript" language="javascript" src="/static/d3.min.js"></script>
+        <script type="application/javascript" language="javascript" src="/static/splitter.js"></script>
+
+        <style>
+            body {
+                white-space: nowrap;
+                height: 100vh;
+/*                 width: 100%; */
+                padding: 0px;
+            }
+
+            body > div {
+                display: inline-block;
+                margin: 1px;
+                height: 98vh;
+                padding: 0px;
+                vertical-align: top;
+            }
+
+            .vsplitter {
+                background: blue;
+                border-style: raised;
+            }
+
+            .vsplitter {
+                width: 4px;
+                cursor: ew-resize;
+            }
+
+            #navigator {
+                float: left;
+                overflow: hidden;
+            }
+
+            #panel {
+                overflow: hidden;
+                border: 2px solid black;
+                width: 200px;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div id="navigator">
+            Here
+        </div>
+
+<!--        <div class="vsplitter">
+        </div>-->
+
+        <div id="panel">
+            Whatever it is
+        </div>
+
+        <script>
+            var splitter = Split("#navigator");
+        </script>
+    </body>
+</html>
