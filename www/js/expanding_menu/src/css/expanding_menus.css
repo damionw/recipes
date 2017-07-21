@@ -1,0 +1,99 @@
+body {
+    overflow: hidden;
+}
+
+#navigator {
+    height: 98vh;
+    width: 200px;
+    float: left;
+    background: #333333;
+    overflow: auto;
+    color: #f0f0f0;
+
+}
+
+#navigator > div:not([class]) {
+    padding: 10px;
+}
+
+.section {
+    color: yellow;
+    text-align: center;
+    padding: 10px;
+}
+
+.vsplitter {
+    cursor: ew-resize;
+    height: 98vh;
+    width: 2px;
+    border-style: ridge;
+    float: left;
+}
+
+.divider {
+    border-bottom-style: groove;
+    border-bottom-width: 1px;
+    border-bottom-color: white;
+}
+
+.menuitem {
+    padding: 10px;
+    color: #f0f0f0;
+}
+
+.menuitem:hover {
+    background: #575776;
+}
+
+.foldable > label {
+    cursor: pointer;
+    color: #f0f0f0;
+    padding: 10px;
+    display: block;
+}
+
+.foldable > input {
+    display: none;
+}
+
+.foldable > label > svg > polygon {
+    fill: #777796;
+}
+
+.foldable > div {
+    text-indent: 30px;
+    display: none;
+}
+
+.foldable > input + label > svg {
+    float: right;
+}
+
+.foldable > input + label > .opened {
+    display: none;
+}
+
+.foldable > input + label > .closed {
+    display: inline-block;
+}
+
+.foldable > input:checked + label > .opened {
+    display: inline-block;
+}
+
+.foldable > input:checked + label > .closed {
+    display: none;
+}
+
+.foldable > input:checked + label + div {
+    display: block;
+}
+
+#tasks-container > label, #supervisor-container > label {
+    color: yellow;
+    text-align: center;
+}
+
+#tasks-container > div, #supervisor-container > div {
+    text-indent: 0px;
+}
