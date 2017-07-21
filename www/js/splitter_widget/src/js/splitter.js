@@ -39,8 +39,7 @@ var Split = function(selector) {
         var container_element = this.parentNode;
         var left_element = this;
 
-        d3.select(container_element)
-            .selectAll("*")
+        d3.selectAll(d3.select(container_element).node().childNodes)
             .filter(
                 function() {
                     return (this != left_element);
