@@ -1,19 +1,16 @@
 var Split = function(selector) {
+    var boundary = 97;
+
     var onMouseDown = function(){
         var slider = d3.select(this).classed("_active", true);
-
-        // We only change the width of the preceding element
-        var prev = slider.select(
-            function() {return this.previousElementSibling;}
-        );
-
-        var next = slider.select(
-            function() {return this.nextElementSibling;}
-        );
+        var left_element = slider.node().previousElementSibling;
+        var right_element = slider.node().nextElementSibling;
 
         var state = {
-            width: parseInt(prev.style("width"), 10)
+            width: parseInt(d3.select(left_element).style("width"), 10)
         };
+
+        d3.select(right_element).style("width", "calc(" + boundary + "% - " + state.width + "px)");
 
         var w = d3.select(window)
             .on("mousemove", mousemove)
@@ -23,15 +20,11 @@ var Split = function(selector) {
 
         function mousemove() {
             var coordinates = d3.mouse(slider.node());
+            var width_spec = Math.round(state.width + coordinates[0]) + "px";
 
-            var bounding_box = slider.select(
-                function() {return this.parentNode.getBoundingClientRect();}
-            )
-
-            prev.style("width", (state.width + coordinates[0]) + "px");
-            state.width = parseInt(prev.style("width"), 10);
-            // next.style("width", (bounding_box.width - state.width) + "px");
-            // console.log(bounding_box[0][0]);
+            d3.select(left_element).style("width", width_spec);
+            state.width = parseInt(d3.select(left_element).style("width"), 10);
+            d3.select(right_element).style("width", "calc(" + boundary + "% - " + width_spec + ")");
         }
 
         function mouseup() {
@@ -41,12 +34,56 @@ var Split = function(selector) {
     };
 
     var insert_splitter = function(d,i) {
-        var div = document.createElement('div');
-        this.parentNode.insertBefore(div, this.nextSibling);
+        var splitter_element = document.createElement("div");
+        var right_element = document.createElement("div");
+        var container_element = this.parentNode;
+        var left_element = this;
 
-        d3.select(div)
-            .classed("vsplitter", true)
+        d3.select(container_element)
+            .selectAll("*")
+            .filter(
+                function() {
+                    return (this != left_element);
+                }
+             )
+            .each(
+                function() {
+                    container_element.removeChild(this);
+                    right_element.appendChild(this);
+                }
+            );
+
+        container_element.appendChild(splitter_element);
+        container_element.appendChild(right_element);
+
+        d3.select(container_element)
+            .selectAll("*")
+            .style("display", "inline-block")
+            .style("height", "100%")
+            .style("float", "left")
+        ;
+
+        d3.select(left_element)
+            .style("margin-right", 0)
+        ;
+
+        var background_color = d3.select(left_element).style("background");
+
+        d3.select(splitter_element)
+            .style("width", "4px")
+            .style("margin-left", 0)
+            .style("margin-right", 0)
+            .style("cursor", "ew-resize")
+            .style("background", background_color)
+            .style("border-style", "raised")
             .on("mousedown", onMouseDown)
+            .on("mouseover", function() {d3.select(this).style("background", "blue");})
+            .on("mouseout", function() {d3.select(this).style("background", background_color);})
+        ;
+
+        d3.select(right_element)
+            .style("width", "calc(" + boundary + "% - " + parseInt(d3.select(left_element).style("width"), 10) + "px)")
+            .style("margin-left", 0)
         ;
     }
 
