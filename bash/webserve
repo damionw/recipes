@@ -338,6 +338,13 @@ http::run_server() {
 }
 
 http::url_mappings() {
+    # Import external module url mappings
+    for name in $(declare -F | awk '{print $NF;}' | grep '^http::[0-9a-zA-Z_][0-9a-zA-Z_]*::url_mappings')
+    do
+        logging::info "Import url mappings from ${name}"
+        "${name}"
+    done
+
     url::add_handler '^\/$' GET http::response_index
     url::add_handler '^\/index.html$' GET http::response_index
     url::add_handler '^\/static\/.*$' GET http::response_file
@@ -353,6 +360,27 @@ http::url_mappings() {
 #===================================================================================
 if ${_IN_SERVER_REQUEST_HANDLER:=false}
 then
+    _modules="$(echo "${_SERVER_MODULES}" | sed -e '/^[ ]*$/d' | sort -u)"
+    _index=0
+
+    while [ -n "${_modules}" ]
+    do
+        ((++_index))
+
+        _module="$(readlink -f "$(echo "${_modules}" | head -1)")"
+        _modules="$(echo "${_modules}" | tail --lines=+2)"
+        logging::info "Loading ${_module}"
+
+        # Extract http::<name> function definitions and transform only the declaration names to http::<index>::<name>
+        _definitions="$(
+            bash -c ". '${_module}'"'; for name in $(declare -F | awk '"'"'{print $NF;}'"'"' | grep "^http::"); do declare -f "${name}"; done' |
+            sed -e 's/^http::\([0-9a-zA-Z_][0-9a-zA-Z_]*\)[ ]/http::'"${_index}"'::\1 /g'
+        )"
+
+        # Import modified functions into local namespace
+        eval "${_definitions}"
+    done
+
     return
 fi
 
@@ -394,9 +422,9 @@ showhelp()
 #       will cause the first non option parameter to be discarded. Here, we just
 #       use -h (help)
 #===================================================================================
-long_options="api:,static:,help,port:,version"
+long_options="api:,static:,help,port:,module:,version"
 
-OPTION_TEMP=$(getopt -a -o hva:s:p: --long ${long_options} -- "$@")
+OPTION_TEMP=$(getopt -a -o hva:s:p:m: --long ${long_options} -- "$@")
 
 if [ $? != 0 ]
 then
@@ -415,6 +443,7 @@ eval set -- "$OPTION_TEMP"
 export _SERVER_SCRIPT="${BASH_SOURCE[0]}"
 export _SERVER_STATIC="$(dirname "${SERVER_SCRIPT}")"
 export _SERVER_API=
+export _SERVER_MODULES=
 
 listener_port=$(tcp::get_unused_port)
 
@@ -428,6 +457,11 @@ do
 
         --port|-p)
             listener_port=$2
+            shift 2
+            ;;
+
+        --module|-m)
+            _SERVER_MODULES="$(echo "${_SERVER_MODULES}"; echo "${2}")"
             shift 2
             ;;
 
