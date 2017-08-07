@@ -3,14 +3,13 @@ var Split = function(selector) {
 
     var onMouseDown = function(){
         var slider = d3.select(this).classed("_active", true);
+        var container = slider.node().parentNode;
         var left_element = slider.node().previousElementSibling;
         var right_element = slider.node().nextElementSibling;
 
         var state = {
             width: parseInt(d3.select(left_element).style("width"), 10)
         };
-
-        d3.select(right_element).style("width", "calc(" + boundary + "% - " + state.width + "px)");
 
         var w = d3.select(window)
             .on("mousemove", mousemove)
@@ -24,7 +23,6 @@ var Split = function(selector) {
 
             d3.select(left_element).style("width", width_spec);
             state.width = parseInt(d3.select(left_element).style("width"), 10);
-            d3.select(right_element).style("width", "calc(" + boundary + "% - " + width_spec + ")");
         }
 
         function mouseup() {
@@ -33,13 +31,15 @@ var Split = function(selector) {
         }
     };
 
-    var insert_splitter = function(d,i) {
+    var split_element = function() {
+        var container = this;
+
+        var left_element = container.firstElementChild;
         var splitter_element = document.createElement("div");
         var right_element = document.createElement("div");
-        var container_element = this.parentNode;
-        var left_element = this;
 
-        d3.selectAll(d3.select(container_element).node().childNodes)
+        // Place all the rightward elements inside a new div
+        d3.selectAll(d3.select(container).node().childNodes)
             .filter(
                 function() {
                     return (this != left_element);
@@ -47,25 +47,24 @@ var Split = function(selector) {
              )
             .each(
                 function() {
-                    container_element.removeChild(this);
+                    container.removeChild(this);
                     right_element.appendChild(this);
                 }
             );
 
-        container_element.appendChild(splitter_element);
-        container_element.appendChild(right_element);
+        // Reconstruct the container to have 3 elements (left, splitter, right)
+        container.appendChild(splitter_element);
+        container.appendChild(right_element);
 
-        d3.select(container_element)
-            .selectAll("*")
-            .style("display", "inline-block")
+        d3.select(container)
+            .style("display", "table")
+        ;
+
+        d3.selectAll(d3.select(container).node().childNodes)
+            .style("display", "table-cell")
             .style("height", "100%")
-            .style("float", "left")
         ;
-
-        d3.select(left_element)
-            .style("margin-right", 0)
-        ;
-
+        
         var background_color = d3.select(left_element).style("background");
 
         d3.select(splitter_element)
@@ -81,13 +80,13 @@ var Split = function(selector) {
         ;
 
         d3.select(right_element)
-            .style("width", "calc(" + boundary + "% - " + parseInt(d3.select(left_element).style("width"), 10) + "px)")
-            .style("margin-left", 0)
+            .style("border", "2px solid green") // DEBUG
+            .style("width", "initial")
         ;
     }
 
     d3.selectAll(selector)
-        .each(insert_splitter);
+        .each(split_element);
     ;
 }
 
