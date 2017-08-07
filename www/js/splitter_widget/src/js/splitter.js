@@ -1,6 +1,4 @@
-var Split = function(selector) {
-    var boundary = 97;
-
+var HSplit = window.HSplit = function(selector) {
     var onMouseDown = function(){
         var slider = d3.select(this).classed("_active", true);
         var container = slider.node().parentNode;
@@ -58,6 +56,7 @@ var Split = function(selector) {
 
         d3.select(container)
             .style("display", "table")
+            .style("width", "100%")
         ;
 
         d3.selectAll(d3.select(container).node().childNodes)
@@ -78,16 +77,9 @@ var Split = function(selector) {
             .on("mouseover", function() {d3.select(this).style("background", "blue");})
             .on("mouseout", function() {d3.select(this).style("background", background_color);})
         ;
-
-        d3.select(right_element)
-            .style("border", "2px solid green") // DEBUG
-            .style("width", "initial")
-        ;
     }
 
     d3.selectAll(selector)
         .each(split_element);
     ;
 }
-
-window.Split = Split;
