@@ -3,91 +3,65 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-        <title>Suite Control Panel</title>
+        <title>Expanding Menu Demo</title>
 
-        <link rel="stylesheet" href="/static/expanding_menus.css" media="screen">
-        
         <script type="application/javascript" language="javascript" src="/static/d3.min.js"></script>
         <script type="application/javascript" language="javascript" src="/static/expanding_menus.js"></script>
+
+        <style>
+            body {
+                display: table;
+            }
+
+            body > *:not(script) {
+                display: table-cell;
+                padding: 10px;
+                margin: 2px;
+            }
+
+            #panel {
+                display: table;
+                color: yellow;
+                background: #2f2f2f;
+            }
+
+            #panel > div {
+                display: table-row;
+                margin: 3px;
+                padding-top: 5px;
+            }
+        </style>
     </head>
 
     <body>
-        <template id="right-arrow-template">
-            <svg class="closed" width="18" height="18" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <polygon fill="none" stroke="none" stroke-width="0" points="1,1 1,18 16,9"/><polygon>
-            </svg>
-        </template>
-
-        <template id="down-arrow-template">
-<!--         USE TEMPLATE CLONING -->
-            <svg class="opened" width="18" height="18" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                <polygon fill="none" stroke="none" stroke-width="0" points="1,1 18,1 9,16"/><polygon>
-            </svg>
-        </template>
-
-        <div id="navigator">
+        <div id="panel">
             <div>
-                Reference counted process group <p id="supervisor_name"></p>
+                Some stuff
             </div>
-
-            <div class="divider"></div>
-
-            <div id="supervisor-container" class="foldable">
-                <input id="_supervisor" type="checkbox">
-
-                <label for="_supervisor">
-                    Supervisor
-                    <svg class="closed" width="18" height="18" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                        <polygon fill="none" stroke="none" stroke-width="0" points="1,1 1,18 16,9"/><polygon>
-                    </svg>
-
-                    <svg class="opened" width="18" height="18" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                        <polygon fill="none" stroke="none" stroke-width="0" points="1,1 18,1 9,16"/><polygon>
-                    </svg>
-                </label>
+            <div id="navigator">
+                <div>
+                    One
+                </div>
+                
+                <div>
+                    Two
+                </div>
 
                 <div>
-                     <div class="task-button">Stop</div>
+                    Three
                 </div>
             </div>
-
-            <div class="divider"></div>
-
-            <div id="tasks-container" class="foldable">
-                <input id="_1" type="checkbox">
-
-                <label for="_1">
-                    Tasks
-                    <svg class="closed" width="18" height="18" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                        <polygon fill="none" stroke="none" stroke-width="0" points="1,1 1,18 16,9"/><polygon>
-                    </svg>
-
-                    <svg class="opened" width="18" height="18" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                        <polygon fill="none" stroke="none" stroke-width="0" points="1,1 18,1 9,16"/><polygon>
-                    </svg>
-                </label>
-
-                <div id="tasks-list">
-                    <div class="foldable">
-                        <input id="_2" type="checkbox">
-
-                        <label for="_2">
-                            One
-                            <svg class="closed" width="18" height="18" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                <polygon fill="none" stroke="none" stroke-width="0" points="1,1 1,18 16,9"/><polygon>
-                            </svg>
-
-                            <svg class="opened" width="18" height="18" xmlns="http://www.w3.org/2000/svg" version="1.1">
-                                <polygon fill="none" stroke="none" stroke-width="0" points="1,1 18,1 9,16"/><polygon>
-                            </svg>
-                        </label>
-
-                        <div>
-                            <div class="menuitem">Whatever</div>
-                        </div>
-                    </div>
-                </div>
+            <div>
+                Some other stuff
             </div>
         </div>
+
+        <div>
+            Whatever
+        </div>
+
+        <script>
+            var menus = Expanding("#navigator");
+        </script>
     </body>
 </html>
