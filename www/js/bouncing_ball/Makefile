@@ -16,11 +16,15 @@ checkouts:
 build/bin/runner: build checkouts/recipes
 	@cp checkouts/recipes/bash/monitored_runner $@
 
-build/bin/webserve: build checkouts/recipes
-	@cp checkouts/recipes/bash/$(notdir $@) $@
+build/bin/webserve: build checkouts/webserve
+	@cp checkouts/webserve/src/$(notdir $@) $@
 
 build/static/d3.min.js: build
 	@curl -q -s https://d3js.org/d3.v4.min.js -o $@
+
+checkouts/webserve: checkouts
+	@git clone https://github.com/damionw/webserve.git $@
+	@touch checkouts/*
 
 checkouts/recipes: checkouts
 	@git clone https://github.com/damionw/recipes.git $@
