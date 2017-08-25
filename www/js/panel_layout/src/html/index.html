@@ -8,14 +8,14 @@
         <script type="application/javascript" language="javascript" src="/static/d3.min.js"></script>
 
         <style>
+            /* Layout Settings */
             body, html {
                 width: 100%;
                 margin: 0;
                 padding: 0;
-                height: calc(100% - 0px);
-                width: calc(100% - 5px);
-/*                height: 100%;
-                width: 100%;*/
+                height: calc(100% - 2px);
+                width: calc(100% - 1px);
+                overflow: hidden;
             }
 
             .frame {
@@ -27,13 +27,11 @@
             .header {
                 height: 0;
                 margin: 2px;
-                background: #f00088;
                 display: table-row;
             }
 
             .main {
                 vertical-align: top;
-                background: beige;
                 display: table-row;
             }
 
@@ -41,9 +39,7 @@
                 width: auto;
                 vertical-align: top;
                 height: 100%;
-                background: #404040;
                 display: inline-block;
-                color: #a0a0f0;
             }
 
             .content {
@@ -53,12 +49,32 @@
                 display: inline-block;
             }
 
+            /* Cosmetic Settings */
+            .header > *, .panel > *, .content > * {
+                padding: 10px;
+            }
+
+            .header {
+                background: #b00088;
+                padding: 10px;
+            }
+
+            .panel {
+                background: #404040;
+                color: #a0a0f0; 
+                padding: 10px;
+            }
+
+            .main {
+                background: beige;
+                padding: 10px;
+            }
+
             .banner {
                 text-align: center;
                 font-size: 24px;
                 width: 100%;
                 color: white;
-                padding: 4px;
             }
         </style>
     </head>
