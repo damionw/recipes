@@ -8,13 +8,32 @@
         <link rel="stylesheet" href="/static/dropdown-list.css">
 
         <script type="application/javascript" language="javascript" src="/static/d3.min.js"></script>
+        <script type="application/javascript" language="javascript" src="/static/ajax.js"></script>
         <script type="application/javascript" language="javascript" src="/static/dropdown-list.js"></script>
 
         <style>
+            .option {
+                cursor: pointer;
+                color: black;
+            }
+
+            .banner {
+                text-align: center;
+                font-size: 20px;
+                padding: 4px;
+                display: inline-block;
+            }
         </style>
     </head>
 
     <body>
+        <div class="banner">
+            <div class="dropdown">
+                <span class="name">Choices</span> 
+                <div class="dropdown-content selection">
+                </div>
+            </div>
+        </div>
     </body>
 
     <script>

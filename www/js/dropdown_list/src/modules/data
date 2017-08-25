@@ -1,10 +1,23 @@
 #! /usr/bin/env bash
 
-http::menus::response_index() {
+http::data::response_index() {
     http::response_file GET index.html "${3}" # Pass back the original headers
 }
 
-http::menus::url_mappings() {
-    url::add_handler '^\/$' GET http::menus::response_index
-    url::add_handler '^\/index.html$' GET http::menus::response_index
+http::data::url_mappings() {
+    url::add_handler '^\/$' GET http::data::response_index
+    url::add_handler '^\/index.html$' GET http::data::response_index
+    url::add_handler '^\/api\/testdata\/*$' GET http::data::response_testdata
+}
+
+http::data::response_testdata() {
+    {
+        echo "one"
+        echo "two"
+        echo "three"
+    } | http::data::make_json_list | http::response_json
+}
+
+http::data::make_json_list() {
+    awk 'BEGIN {print "[";} {printf("%s\"%s\"\n", sep, $0); sep=","} END {print "]";}' sep=
 }
