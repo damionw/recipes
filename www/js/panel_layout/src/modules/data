@@ -7,9 +7,4 @@ http::data::response_index() {
 http::data::url_mappings() {
     url::add_handler '^\/$' GET http::data::response_index
     url::add_handler '^\/index.html$' GET http::data::response_index
-    url::add_handler '^\/api\/testdata\/*$' GET http::data::response_testdata
-}
-
-http::data::response_testdata() {
-    echo "[1,2,3,4,5]" | http::response_json
 }
