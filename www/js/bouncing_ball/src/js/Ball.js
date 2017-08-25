@@ -4,15 +4,15 @@
 var Ball = function(canvas, x, y) {
     var self = this;
 
-    this.radius = 20;
+    this.radius = 30;
 
     this.x = x ? x : this.radius;
     this.y = y ? y : this.radius;
     this.interval = 1; // 100 milliseconds
-    this.velocity_x = 5;
+    this.velocity_x = 2;
     this.velocity_y = 0;
     this.elapsed = 0;
-    this.gravity = 10;
+    this.gravity = 45;
 
     this.d3canvas = d3.select(canvas);
 
@@ -28,7 +28,7 @@ var Ball = function(canvas, x, y) {
         .attr("cx", function(d){return self.x;})
         .attr("cy", function(d){return self.y;})
         .attr("r", function(d){return self.radius;})
-        .style("fill", function(d){return "blue";})
+        .style("fill", function(d){return "green";})
     ;
 
     this._timer = setInterval(

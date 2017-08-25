@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+
+http::menus::response_index() {
+    http::response_file GET index.html "${3}" # Pass back the original headers
+}
+
+http::menus::url_mappings() {
+    url::add_handler '^\/$' GET http::menus::response_index
+    url::add_handler '^\/index.html$' GET http::menus::response_index
+}
