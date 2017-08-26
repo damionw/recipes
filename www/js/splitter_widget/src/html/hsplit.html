@@ -9,17 +9,29 @@
         <script type="application/javascript" language="javascript" src="/static/splitter.js"></script>
 
         <style>
+            body, html {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                height: calc(100% - 2px);
+                width: calc(100% - 1px);
+                overflow: hidden;
+            }
+
             #top {
                 display: table;
-                height: 95vh;
-                width: 100vw;
+                height: 100%;
+                width: 100%;
             }
 
             .banner {
                 text-align: center;
-                height: 30px;
                 font-size: 24px;
                 color: yellow;
+            }
+
+            #header {
+                padding: 10px;
                 background: #3c3c9c;
             }
 
@@ -49,8 +61,13 @@
 
     <body>
         <div id="top">
-            <div class="banner">
-                What is it
+            <div id="header">
+                <div class="banner">
+                    What is it
+                </div>
+                <div class="banner">
+                    Now
+                </div>
             </div>
 
             <div id="main">
