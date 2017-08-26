@@ -8,8 +8,6 @@ all: build/static build/modules  build/static/d3.min.js build/bin/webserve build
 demo: all
 	build/bin/runner "make; trap exit 1 2 3; exec build/bin/webserve --static=build/static --module=build/modules/main --port=10007" src
 
-# build: build/bin build/static build/modules
-
 build/%:
 	@install -d $@
 

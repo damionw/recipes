@@ -9,10 +9,10 @@ var Ball = function(canvas, x, y) {
     this.x = x ? x : this.radius;
     this.y = y ? y : this.radius;
     this.interval = 1; // 100 milliseconds
-    this.velocity_x = 2;
+    this.velocity_x = 5;
     this.velocity_y = 0;
     this.elapsed = 0;
-    this.gravity = 45;
+    this.gravity = 10;
 
     this.d3canvas = d3.select(canvas);
 
