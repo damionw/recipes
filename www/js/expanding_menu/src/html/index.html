@@ -6,64 +6,95 @@
         <title>Expanding Menu Demo</title>
 
         <script type="application/javascript" language="javascript" src="/static/d3.min.js"></script>
-        <script type="application/javascript" language="javascript" src="/static/expanding_menus.js"></script>
 
         <style>
-            body {
-                display: table;
-            }
-
-            body > *:not(script) {
-                display: table-cell;
-                padding: 10px;
-                margin: 2px;
+            body, html {
+                width: 100%;
+                margin: 0;
+                padding: 0;
+                height: calc(100% - 2px);
+                width: calc(100% - 1px);
             }
 
             #panel {
                 display: table;
-                color: yellow;
                 background: #2f2f2f;
+                height: 100%;
+                color: white;
             }
 
-            #panel > div {
-                display: table-row;
-                margin: 3px;
-                font-family: Arial;
-                font-size: 16px;
-                padding-top: 5px;
+            #panel > * {
+/*                padding-left: 10px;
+                padding-right: 0px;*/
+                padding-top: 4px;
+                padding-bottom: 4px;
+            }
+
+            #panel > details {
+                padding-left: 20px;
+                text-align: left;
+            }
+
+            #panel > details > summary:focus {
+                outline: 0;
+            }
+
+            #panel > details > summary {
+                font-size: 20px;
+                color: #b0b0f0;
+            }
+
+            #panel > details > *:not(summary) + .disabled {
+                color: grey;
+            }
+
+            #panel > details > *:not(summary) {
+                padding-left: 20px;
+                padding-top: 2px;
+                padding-bottom: 2px;
+                font-size: 18px;
+                color: white;
+                cursor: pointer;
+                text-align: left;
+            }
+
+            #panel > details > *:not(summary):hover:not(.disabled) {
+                font-size: 21px;
+            }
+
+            .banner {
+                text-align: center;
+                font-size: 24px;
+                width: 100%;
+                color: yellow;
             }
         </style>
     </head>
 
     <body>
         <div id="panel">
-            <div>
-                Some stuff
+            <div class="banner">
+                This is explanatory
             </div>
-            <div id="navigator">
-                <div>
-                    One
-                </div>
-                
-                <div>
-                    Two
-                </div>
-
-                <div>
-                    Three
-                </div>
+            <details>
+                <summary>First Section</summary>
+                <div>One</div>
+                <div>Two</div>
+                <div class="disabled">Three</div>
+                <div>Four</div>
+            </details>
+            <details>
+                <summary>Second Section</summary>
+                <div>A</div>
+                <div>B</div>
+                <div>C</div>
+            </details>
+            <div class="banner">
+                More notes
             </div>
-            <div>
-                Some other stuff
-            </div>
-        </div>
-
-        <div>
-            Whatever
         </div>
 
         <script>
-            var menus = Expanding("#navigator");
         </script>
     </body>
 </html>
