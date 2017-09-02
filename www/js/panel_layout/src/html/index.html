@@ -5,6 +5,10 @@
 
         <title>Panel Layout Demo</title>
 
+        <link rel="stylesheet" href="/static/layout.css" media="screen">
+        <link rel="stylesheet" href="/static/navigation.css" media="screen">
+        <link rel="stylesheet" href="/static/content.css" media="screen">
+
         <script type="application/javascript" language="javascript" src="/static/d3.min.js"></script>
 
         <style>
@@ -18,56 +22,17 @@
                 overflow: hidden;
             }
 
-            .frame {
-                height: 100%;
-                width: 100%;
-                display: table;
-            }
-
-            .header {
-                height: 0;
-                margin: 2px;
-                display: table-row;
-            }
-
-            .main {
-                vertical-align: top;
-                display: table-row;
-            }
-
-            .panel {
-                width: auto;
-                vertical-align: top;
-                height: 100%;
-                display: inline-block;
-            }
-
-            .content {
-                height: 100%;
-                vertical-align: top; 
-                padding: 5px;
-                display: inline-block;
-            }
-
-            /* Cosmetic Settings */
-            .header > *, .panel > *, .content > * {
-                padding: 10px;
-            }
-
             .header {
                 background: #b00088;
-                padding: 10px;
             }
 
-            .panel {
+            .navigation {
                 background: #404040;
                 color: #a0a0f0; 
-                padding: 10px;
             }
 
             .main {
                 background: beige;
-                padding: 10px;
             }
 
             .banner {
@@ -91,16 +56,35 @@
             </div>
 
             <div class="main">
-                <div class="panel">
-                    Menu Items
-                    <br>
-                    More
-                    <br>
-                    Even more
+                <div class="navigation navigation-menu">
+                    <div class="menu-label">
+                        Hello
+                    </div>
+
+                    <div class="menu-entry">
+                        Start
+                    </div>
+
+                    <div class="menu-entry">
+                        Stop
+                    </div>
+
+                    <div class="menu-entry menu-disabled">
+                        Restart
+                    </div>
+
+                    <details class="menu-label">
+                        <summary>Another</summary>
+                        <div>One</div>
+                        <div>Two</div>
+                        <div class="menu-disabled">Three</div>
+                    </details>
                 </div>
 
-                <div class="content">
-                    Content
+                <div class="content-display content-selected">
+                    <div>
+                        This is a test
+                    </div>
                 </div>
             </div>
         </div>
