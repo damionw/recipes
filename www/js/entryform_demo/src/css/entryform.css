@@ -1,6 +1,6 @@
 .entryform-container {
     display: table;
-    border: 1px solid black;
+/*     border: 1px solid black; */
     padding: 5px;
 }
 
@@ -18,7 +18,7 @@
     border: 1px solid black;
 }
 
-.entryform-container > .entryform_row > .entryform_value:selected {
+.entryform-container > .entryform_row > .entryform_value:hover {
     display: table-cell;
     border: 1px solid green;
 }

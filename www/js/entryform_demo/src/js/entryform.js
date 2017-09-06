@@ -1,41 +1,48 @@
 var EntryForm = window.EntryForm = function(selector, data_format) {
-    function initialize(element, data_format) {
-        function format_row(data_descriptor) {
-            var d3_row = d3.select(this);
-            
+    /* data_format:
+    [{"label": <label>, "name": <name>, "value": <value>}, ...]
+    */
+
+    function initialize(element, data_format, _collection) {
+        function format_row(element, data_descriptor) {
+            var d3_row = d3.select(element);
+
             d3_row
                 .append("div")
-                .classed("entryform_label")
+                .classed("entryform_label", true)
+                .text(data_descriptor.label)
             ;
 
             d3_row
                 .append("div")
-                .classed("entryform_value")
+                .classed("entryform_value", true)
+                .text(data_descriptor.value)
             ;
         }
 
-        var d3_element = d3.select(element);
+        _collection.push(element);
 
-        /* data_format:
-        [{"label": <label>, "name": <name>, "value": <value>}, ...]
-        */
-        d3_element.html("");
-        
-        d3_element
+        d3.select(element)
+            .html("")
             .selectAll("div")
             .data(data_format)
-            .enter
+            .enter()
                 .append("div")
-                .classed("entryform_row")
-                .each(function(d) {format_row(d);})
+                .classed("entryform_row", true)
+                .each(function(d) {format_row(this, d);})
             ;
+
+        d3.select(element)
+            .append("div")
+            .append("div")
+            .classed("entryform_button", true)
+            .text("Done")
+        ;
     }
 
-    var self = this;
-
-    this.targets = [];
+    var targets = this.targets = [];
 
     d3.selectAll(selector)
-        .each(function(d,i) {initialize(this, data_format);})
+        .each(function(d,i) {initialize(this, data_format, targets);})
     ;
 };
