@@ -1,44 +1,24 @@
-/* Primary, enclosing container Fills the page */
-body > div:nth-of-type(1) {
-    height: 100%;
-    width: 100%;
+.entryform-container {
     display: table;
+    border: 1px solid black;
+    padding: 5px;
 }
 
-/* Header Settings */
-body > div:nth-of-type(1) > div:nth-of-type(1) {
-    height: 0;
-    margin: 2px;
+.entryform-container > .entryform_row {
     display: table-row;
+    padding: 5px;
 }
 
-body > div:nth-of-type(1) > div:nth-of-type(1) > * {
-    padding: 10px;
+.entryform-container > .entryform_row > .entryform_label {
+    display: table-cell;
 }
 
-/* Workspace Settings */
-body > div:nth-of-type(1) > div:nth-of-type(2) {
-    vertical-align: top;
-    display: table-row;
-    overflow: hidden;
+.entryform-container > .entryform_row > .entryform_value {
+    display: table-cell;
+    border: 1px solid black;
 }
 
-/* Navigation Panel Settings */
-body > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) {
-    padding: 10px;
-    width: auto;
-    vertical-align: top;
-    height: 100%;
-    float: left;
-    overflow: auto;
-}
-
-/* Content Panel Settings */
-body > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-last-of-type(1) {
-    height: 100%;
-    width: auto;
-    vertical-align: top;
-    padding: 1px;
-    overflow: hidden;
-    color: black;
+.entryform-container > .entryform_row > .entryform_value:selected {
+    display: table-cell;
+    border: 1px solid green;
 }
