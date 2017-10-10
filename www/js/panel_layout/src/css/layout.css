@@ -25,12 +25,13 @@ body > div:nth-of-type(1) > div:nth-of-type(2) {
 
 /* Navigation Panel Settings */
 body > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-of-type(1) {
+    margin-top: 2px;
     padding: 10px;
     width: auto;
     vertical-align: top;
     height: 100%;
     float: left;
-    overflow: auto;
+    overflow: hidden;
 }
 
 /* Content Panel Settings */
@@ -39,6 +40,6 @@ body > div:nth-of-type(1) > div:nth-of-type(2) > div:nth-last-of-type(1) {
     width: auto;
     vertical-align: top;
     padding: 1px;
-    overflow: hidden;
+    overflow: auto;
     color: black;
 }

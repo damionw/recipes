@@ -23,7 +23,7 @@
             }
 
             .header {
-                background: #b00088;
+                background: #9000a8;
             }
 
             .navigation {
@@ -40,6 +40,15 @@
                 font-size: 24px;
                 width: 100%;
                 color: white;
+            }
+
+            .table-cell {
+                width: 40px;
+                border: 1px solid blue;
+                margin: 0px;
+            }
+
+            #surface {
             }
         </style>
     </head>
@@ -102,8 +111,9 @@
                 </div>
 
                 <div class="content-display content-selected">
-                    <div>
-                        This is a test
+                    <div id="surface">
+                        <div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -111,5 +121,24 @@
     </body>
 
     <script>
+        var panel_item = d3.select("#surface");
+
+        panel_item.html("");
+
+        var table_item = panel_item.append("table");
+
+        table_item
+            .selectAll("tr")
+            .data(Array.from(Array(20).keys()))
+            .enter()
+                .append("tr")
+                .selectAll("td")
+                .data(Array.from(Array(20).keys()))
+                    .enter()
+                    .append("td")
+                    .classed("table-cell", true)
+                    .text(function(d,i) {return d;})
+        ;
+
     </script>
 </html>
