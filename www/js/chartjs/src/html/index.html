@@ -1,0 +1,68 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <title>Canvas Demo</title>
+
+        <script type="application/javascript" language="javascript" src="/static/d3.min.js"></script>
+        <script type="application/javascript" language="javascript" src="/static/Chart.min.js"></script>
+
+        <style>
+            /* Layout Settings */
+            body, html {
+                margin: 0;
+                padding: 0;
+/*                height: calc(100% - 2px);
+                width: calc(100% - 1px);*/
+                overflow: auto;
+            }
+
+            body > div {
+                margin: 10px; 
+                border: 2px solid blue;
+                height: calc(100% - 2px);
+                width: calc(100% - 50px);
+            }
+        </style>
+    </head>
+
+    <body>
+        <div>
+            <canvas id="myChart">
+            </canvas>
+        </div>
+    </body>
+
+    <script>
+        var ctx = document.getElementById('myChart').getContext('2d');
+
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: ["January", "February", "March", "April", "May", "June", "July"],
+                datasets: [{
+                    label: "My First dataset",
+                    backgroundColor: 'rgb(255, 99, 132)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    data: [0, 10, 5, 2, 20, 30, 45],
+                }]
+            },
+
+            // Configuration options go here
+            options: {
+                layout: {
+                    padding: {
+                        left: 20,
+                        right: 20,
+                        top: 0,
+                        bottom: 0
+                    }
+                }
+            }
+        });
+    </script>
+</html>
