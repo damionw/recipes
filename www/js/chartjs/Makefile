@@ -1,4 +1,9 @@
-.PHONY: clean
+DEMO_PORT=10020
+
+.PHONY: clean help
+
+help:
+	@echo "Usage: make all|demo|clean"
 
 all: build/static build/modules build/static/d3.min.js build/static/Chart.min.js build/bin/webserve build/bin/runner
 	-@cp src/js/* build/static/.
@@ -7,7 +12,8 @@ all: build/static build/modules build/static/d3.min.js build/static/Chart.min.js
 	-@cp src/css/* build/static/.
 
 demo: all
-	build/bin/runner "make; trap exit 1 2 3; exec build/bin/webserve --static=build/static --module=build/modules/main --port=10020" src
+	xdg-open "http://127.0.0.1:$(DEMO_PORT)"
+	build/bin/runner "make; trap exit 1 2 3; exec build/bin/webserve --static=build/static --module=build/modules/main --port=$(DEMO_PORT)" src
 
 build/%:
 	@install -d $@
