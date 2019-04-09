@@ -6,7 +6,17 @@
 command="$1"
 shift
 
-if [ -z "$@" ]
+stop() {
+    pids="$(pstree -p ${1:?Need pid} | sed -e 's/---/\n/g' -e 's/[^\(]*[\(]//g' -e 's/[\)].*$//g')"
+
+    if [ -n "${pids}" ]
+    then
+        echo "Stopping $pids" >&2
+        kill -9 $pids
+    fi
+}
+
+if [ "${#@}" -lt 1 ]
 then
     echo "No filename(s) provided for monitoring"
     exit 225
@@ -20,9 +30,9 @@ do
 
     if [ "${previous_hash}" != "${new_hash}" ]
     then
-        if [ -n "${pid}" ]
+        if [ -n "${pid}" -a -d /proc/${pid} ]
         then
-            kill "${pid}"
+            stop ${pid}
             sleep 2
             pid=
         fi
@@ -37,7 +47,7 @@ done
 
 echo "Exited after user interruption" >&2
 
-if [ -n "${pid}" ]
+if [ -n "${pid}" -a -d /proc/${pid} ]
 then
-    kill "${pid}"
+    stop ${pid}
 fi
