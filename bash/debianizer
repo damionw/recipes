@@ -1,0 +1,241 @@
+#! /usr/bin/env bash
+
+showhelp()
+{
+    showoptions()
+    {
+        echo "[--help]"
+        echo "[--source=<path>]"
+        echo "[--[target|deb]=<debfile> (package.deb)]"
+        echo "[--root=<rootpath> (/opt)]"
+        echo "[--postinstall=<filename>]"
+        echo "[--requires=<package-spec>]"
+        echo "[--priority=<mode> (optional)]"
+        echo "[--preuninstall=<filename>]"
+        echo "[--maintainer=<contact>]"
+        echo "[--repository=<path>]"
+    }
+
+    echo Usage: $0 $(showoptions) >&2
+    exit 15
+}
+
+#===================================================================================
+# NOTE: There is a bug in getopts where not specifying at least one short option
+#       will cause the first non option parameter to be discarded. Here, we just
+#       use -h (help)
+#===================================================================================
+package_options=",package:,version:,postinstall:,preuninstall:,priority:,maintainer:,requires:,repository:"
+
+OPTION_TEMP=$(getopt -a -o hs:t:d:r: --long help,source:,target:,deb:,root:${package_options} -- "$@")
+
+SECTION="DKW's Stuff"
+
+if [ $? != 0 ]
+then
+    echo "Invalid command line options ${OPTION_TEMP}" >&2
+    exit 15
+fi
+
+if [ $# = 0 ]
+then
+    showhelp
+fi
+
+eval set -- "$OPTION_TEMP"
+
+#===================================================================================
+#                           Set Defaults
+#===================================================================================
+SOURCE_DIRECTORY=
+DEBIAN_FILENAME=package.deb
+DEBIAN_VERSION="2.0"
+ROOT_PATH=/opt
+ARCHITECTURE=all
+DESCRIPTION=
+PRIORITY=optional
+MAINTAINER="damionw@gmail.com"
+REPOSITORIES=
+
+#===================================================================================
+#                     Process command line parameters
+#===================================================================================
+while true
+do
+    case "$1" in
+        --repository)
+            export REPOSITORIES="${REPOSITORIES}${REPOSITORIES:+ }$2"; shift 2
+            ;;
+
+        --requires)
+            export REQUIRES="${REQUIRES}${REQUIRES:+, }$2"; shift 2
+            ;;
+
+        --maintainer)
+            export MAINTAINER="$2"; shift 2
+            ;;
+
+        --priority)
+            export PRIORITY="$2"; shift 2
+            ;;
+
+        --postinstall)
+            export POSTINSTALL="$2"; shift 2
+            ;;
+
+        --preuninstall)
+            export PREUNINSTALL="$2"; shift 2
+            ;;
+
+        --package)
+            export PACKAGE="$2"; shift 2
+            test -n "$DESCRIPTION" && DESCRIPTION="${PACKAGE}"
+            ;;
+
+        --version)
+            export VERSION="$2"; shift 2
+            ;;
+
+        --source|-s)
+            SOURCE_DIRECTORY="$2"; shift 2
+            ;;
+
+        --root|-r)
+            ROOT_PATH="${2}"; shift 2
+            ;;
+
+        --target|-t|--deb|-d)
+            DEBIAN_FILENAME="$2"; shift 2
+            ;;
+
+        --help|-h)
+            showhelp
+            ;;
+
+        --)
+            shift
+            break
+            ;;
+    esac
+done
+
+#===================================================================================
+#                                Sanity Checks
+#===================================================================================
+if [ -z "$SOURCE_DIRECTORY" ]
+then
+    echo "No source directory provided" >&2
+    exit 255
+fi
+
+SOURCE_DIRECTORY=$(cd ${SOURCE_DIRECTORY} && pwd)
+
+#===================================================================================
+#                             Create debian archive
+#===================================================================================
+write_binary()
+{
+    echo "${DEBIAN_VERSION}"
+}
+
+write_control()
+{
+    mapping()
+    {
+        echo PACKAGE Package
+        echo VERSION Version
+        echo ARCHITECTURE Architecture
+        echo DESCRIPTION Description
+        echo PRIORITY Priority
+        echo MAINTAINER Maintainer
+        echo REQUIRES Depends
+        echo REQUIRES Pre-Depends
+        echo SECTION Section
+        echo TAGS Tag
+    }
+
+    control()
+    {
+        mapping | while read name label
+        do
+            eval value='"$'${name}'"'
+            test -n "${value}" && echo "${label}: ${value}"
+        done
+    }
+
+    control_example()
+    {
+        sed -e 's/^[ ]*//g' << "        EOF"
+        Package: acme
+        Version: 0.1
+        Section: demo
+        Priority: optional
+        Architecture: all
+        Essential: no
+        Depends: python (>= 2.5)
+        Pre-Depends: python
+        Recommends: mozilla | netscape
+        Suggests: docbook
+        Installed-Size: 1024
+        Maintainer: Damion Wilson [damionw@gmail.com]
+        Conflicts: wile-e-coyote
+        Replaces: sam-sheepdog
+        Provides: acme
+        Description: This description
+        Tags: test::0
+        EOF
+    }
+
+    control > "${METADATA_DIRECTORY}/control"
+
+    if test -f "${PREUNINSTALL}"
+    then
+        cp "${PREUNINSTALL}" "${METADATA_DIRECTORY}/prerm"
+        chmod o+rx "${METADATA_DIRECTORY}/prerm"
+    fi
+
+    if test -f "${POSTINSTALL}"
+    then
+        cp "${POSTINSTALL}" "${METADATA_DIRECTORY}/postinst"
+        chmod o+rx "${METADATA_DIRECTORY}/postinst"
+    fi
+
+    (cd "${METADATA_DIRECTORY}" && exec tar cfz - .)
+}
+
+write_data()
+{
+    if (cd "${SOURCE_DIRECTORY}" && find . ! -path '*.svn*' | cpio -pdum --quiet "${STAGING_DIRECTORY}/packagedata${ROOT_PATH}/.")
+    then
+        find "${STAGING_DIRECTORY}/packagedata" -type f -exec md5sum {} \; > "${METADATA_DIRECTORY}/md5sums"
+        (cd "${STAGING_DIRECTORY}/packagedata/." && exec tar cfz - .)
+    fi
+}
+
+STAGING_DIRECTORY=$(mktemp -d)
+METADATA_DIRECTORY=$(mktemp -d)
+
+binary="${STAGING_DIRECTORY}/debian-binary"
+control="${STAGING_DIRECTORY}/control.tar.gz"
+data="${STAGING_DIRECTORY}/data.tar.gz"
+
+write_data > "${data}"
+write_binary > "${binary}"
+
+TAGS="${TAGS}${TAGS:+ }md5sum::$(md5sum < ${data} | awk '{print $1;}') size::$(wc -c < ${data})"
+
+write_control > "${control}"
+
+rm "${DEBIAN_FILENAME}" >/dev/null 2>&1
+
+ar qc "${DEBIAN_FILENAME}" "${binary}" "${control}" "${data}"
+
+for repository in $REPOSITORIES
+do
+    cp "${DEBIAN_FILENAME}" "${repository}/"
+done
+
+#===================================================================================
+#                        Cleanup
+#===================================================================================
+rm -rf "${STAGING_DIRECTORY}" "${METADATA_DIRECTORY}" >/dev/null 2>&1
