@@ -1,27 +1,113 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <link href="material.css" rel="stylesheet">
-  <link href="vuetify.css" rel="stylesheet">
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href='material.css'>
+    <link rel="stylesheet" href='font-awesome.css'>
+    <link rel="stylesheet" href="vuetify.css">
+    <link rel="stylesheet" href="basic_demo.css">
+
+    <script type="application/javascript" language="javascript" src="vue.js"></script>
+    <script type="application/javascript" language="javascript" src="vuetify.js"></script>
+    <script type="application/javascript" language="javascript" src="basic_demo.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
 </head>
+
 <body>
-  <div id="app">
-    <v-app>
-      <v-content>
-        <v-container>Hello world</v-container>
-        <v-btn>
-            Press it
-        </v-btn>
-      </v-content>
-    </v-app>
-  </div>
+    <div id="app">
+        <v-app>
+            <v-navigation-drawer
+                v-model="drawer"
+                fixed
+                clipped
+                hide-overlay = "false"
+                class="grey lighten-4"
+                disable-resize-watcher
+                app
+            >
+            </v-navigation-drawer>
 
-  <script src="vue.js"></script>
-  <script src="vuetify.js"></script>
-  <script src="basic_demo.js"></script>
+            <v-toolbar color="#23afca" app fixed dense clipped-left absolute=true >
+                <v-toolbar-nav-icon @click="drawer = ! drawer">
+                </v-toolbar-nav-icon>
 
-  <script>
-  </script>
+                <v-toolbar-title>
+                    {{ application.description }}
+                </v-toolbar-title>
+
+                <v-spacer></v-spacer>
+
+                <v-btn icon light>
+                    <v-icon color="grey darken-2">search</v-icon>
+                </v-btn>
+            </v-toolbar>
+
+            <v-content pa-0 ma-0>
+                <v-container class="light-grey" fluid grid-list-md align-content-start fill-height>
+                    <v-layout row fill-height>
+                        <v-flex xs4 sm4 fill-height style="height: 100%">
+                            <v-card style="height: 100%;">
+                                Test panel
+                            </v-card>
+                        </v-flex>
+
+                        <v-flex xs12 sm12 fill-height style="height: 100%">
+                            <v-card style="height: 100%;">
+                                <v-container fluid grid-list-md align-content-start fill-height>
+                                    <v-layout column fill-height mt-1>
+                                        <v-tabs
+                                            color="#afafca"
+                                            slider-color="yellow"
+                                        >
+                                            <v-tab ripple>Primary</v-tab>
+                                            <v-tab-item>
+                                                <my-folder
+                                                ></my-folder>
+                                            </v-tab-item>
+                                            
+                                            <v-tab ripple>Secondary</v-tab>
+                                            <v-tab-item>
+                                                <my-folder
+                                                ></my-folder>
+                                            </v-tab-item>
+                                        </v-tabs>
+                                    </v-layout>
+                                </v-container>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-content>
+
+            <v-footer class="secondary" app>
+                <v-layout row wrap align-center>
+                    <v-flex xs12>
+                        <div class="white--text ml-3">
+                            Made using <a class="white--text" href="https://vuetifyjs.com" target="_blank">Vuetify</a>
+                            by <a class="white--text" href="https://github.com/damionw" target="_blank">Damion Wilson</a>
+                        </div>
+                    </v-flex>
+                </v-layout>
+            </v-footer>
+        </v-app>
+    </div>
+
+    <script type="text/x-template" id="my-folder">
+        <v-container fluid grid-list-xs justify-start pa-0>
+            <v-subheader>Global</v-subheader>
+
+            <v-list-tile @click="handle_folder_event">
+                <v-list-tile-action>
+                    <v-icon large color="purple darken-2">domain</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                    <v-list-tile-title class="blue--text">Global Settings</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+        </v-container>
+    </script>
 </body>
 </html>

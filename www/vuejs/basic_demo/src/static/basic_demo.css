@@ -1,0 +1,34 @@
+.v-navigation-drawer__border {
+/*     display: none; */
+}
+
+.btn_note_bar:hover {
+    color: #000;
+}
+
+@media screen and (min-width: 769px) {
+    .notescontent {
+        text-align: center;
+        justify-content: center;
+        padding-left: 10%;
+        padding-right: 10%;
+    }
+}
+
+@media screen and (min-device-width: 481px) and (max-device-width: 768px) {
+    /* STYLES HERE */
+    .v-toolbar {
+        margin: 2px;
+    }
+}
+
+@media only screen and (max-device-width: 480px) {
+    .notescontent {
+        text-align: center;
+        justify-content: center;
+    }
+}
+
+body > * {
+    margin: 2px;
+}
