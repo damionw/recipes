@@ -30,12 +30,33 @@ var my_folder = {
     }
 };
 
+var my_form = {
+    template: "#my-form",
+
+    props: [
+    ],
+
+    data(){
+        return {
+            name: null,
+            age: null,
+        }
+    },
+
+    methods: {
+    },
+
+    watch: {
+    }
+};
+
 document.addEventListener(
     'DOMContentLoaded',
 
     function() {
         settings.components = [
             Vue.component("my-folder", my_folder),
+            Vue.component("my-form", my_form),
         ];
 
         Vue.use(

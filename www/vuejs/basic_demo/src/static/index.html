@@ -67,10 +67,10 @@
                                                 ></my-folder>
                                             </v-tab-item>
                                             
-                                            <v-tab ripple>Secondary</v-tab>
+                                            <v-tab ripple>Details</v-tab>
                                             <v-tab-item pa-1>
-                                                <my-folder
-                                                ></my-folder>
+                                                <my-form
+                                                ></my-form>
                                             </v-tab-item>
                                         </v-tabs>
                                     </v-layout>
@@ -107,6 +107,24 @@
                     <v-list-tile-title class="blue--text">Global Settings</v-list-tile-title>
                 </v-list-tile-content>
             </v-list-tile>
+        </v-container>
+    </script>
+
+    <script type="text/x-template" id="my-form">
+        <v-container fluid grid-list-xs justify-start pa-1>
+            <v-layout column pa-1 ma-1>
+                <v-text-field
+                    single-line
+                    label="Name"
+                    v-model="name"
+                    required
+                ></v-text-field>
+                <v-text-field
+                    single-line
+                    label="Age"
+                    v-model="age"
+                ></v-text-field>
+            </v-layout>
         </v-container>
     </script>
 </body>
