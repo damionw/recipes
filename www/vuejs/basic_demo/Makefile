@@ -29,17 +29,17 @@ MONITORED_RUNNER := $(BUILD_BIN)/monitored_runner
 all: $(WEBSERVE) $(RUN_DEMO) $(MODULE_COMPONENTS) $(STATIC_COMPONENTS)
 
 help:
-	@echo "Usage: make [all|run_demo|clean]"
+	@echo "Usage: make [all|demo|clean|realclean]"
 
-_run_demo: clean all
+_demo: clean all
 	@$(WEBSERVE) \
 		--static='$(BUILD_STATIC)' \
 		--allow=127.0.0.1 \
 		--module='$(BUILD_MODULES)/$(PACKAGE_NAME)' \
 		--port=$(FREE_PORT)
 
-run_demo: $(MONITORED_RUNNER)
-	@$(MONITORED_RUNNER) "make _run_demo" src Makefile
+demo: $(MONITORED_RUNNER)
+	@$(MONITORED_RUNNER) "make _demo" src Makefile
 
 $(WEBSERVE): checkouts/webserve $(DIR_COMPONENTS)
 	@install $</build/bin/$(notdir $@) $@
