@@ -27,6 +27,8 @@
                 disable-resize-watcher
                 app
             >
+                <toolbar-menu>
+                </toolbar-menu>
             </v-navigation-drawer>
 
             <v-toolbar color="#23afca" app fixed dense clipped-left absolute=true >
@@ -49,7 +51,8 @@
                     <v-layout row fill-height>
                         <v-flex xs4 sm4 fill-height style="height: 100%">
                             <v-card style="height: 100%;">
-                                Test panel
+                                <toolbar-menu>
+                                </toolbar-menu>
                             </v-card>
                         </v-flex>
 
@@ -58,7 +61,7 @@
                                 <v-container fluid grid-list-md align-content-start fill-height pa-1>
                                     <v-layout column fill-height mt-1>
                                         <v-tabs
-                                            color="#afafca"
+                                            color="#7f12a2"
                                             slider-color="yellow"
                                         >
                                             <v-tab ripple>Primary</v-tab>
@@ -126,6 +129,38 @@
                 ></v-text-field>
             </v-layout>
         </v-container>
+    </script>
+
+    <script type="text/x-template" id="toolbar-menu">
+        <v-list dense class="dark-grey">
+            <v-layout row align-center>
+                <v-flex xs6>
+                    <v-subheader>Main</v-subheader>
+                </v-flex>
+            </v-layout>
+
+            <v-list-tile @click="preferences">
+                <v-list-tile-action>
+                    <v-icon>add</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                    <v-list-tile-title class="grey--text">Preferences</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+
+            <v-divider></v-divider>
+
+            <v-list-tile @click="save">
+                <v-list-tile-action>
+                    <v-icon>close</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                    <v-list-tile-title class="grey--text">Save</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+        </v-list>
     </script>
 </body>
 </html>

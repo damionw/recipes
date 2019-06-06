@@ -50,12 +50,34 @@ var my_form = {
     }
 };
 
+var toolbar_menu = {
+    template: "#toolbar-menu",
+
+    props: [
+    ],
+
+    data(){
+        return {
+        }
+    },
+
+    methods: {
+        preferences: function() {
+            console.log("Select Preferences View");
+        },
+        save: function() {
+            console.log("Select Save");
+        },
+    },
+};
+
 document.addEventListener(
     'DOMContentLoaded',
 
     function() {
         settings.components = [
             Vue.component("my-folder", my_folder),
+            Vue.component("toolbar-menu", toolbar_menu),
             Vue.component("my-form", my_form),
         ];
 
