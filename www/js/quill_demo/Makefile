@@ -38,7 +38,7 @@ checkouts/webserve: checkouts
 	@touch checkouts/*
 
 checkouts/quill: checkouts
-	@LD_LIBRARY_PATH= /usr/bin/wget --quiet -O - https://github.com/quilljs/quill/releases/download/v1.3.0/quill.tar.gz | (cd checkouts && tar xfz -)
+	@LD_LIBRARY_PATH= /usr/bin/wget --quiet -O - --no-check-certificate https://github.com/quilljs/quill/releases/download/v1.3.0/quill.tar.gz | (cd checkouts && tar xfz -)
 
 clean:
 	-@rm -rf build checkouts

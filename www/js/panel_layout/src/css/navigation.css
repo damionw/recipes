@@ -12,6 +12,7 @@
 }
 
 .navigation-menu > .menu-group {
+    resize: horizontal;
     width: calc(100% - 35px);
 }
 
