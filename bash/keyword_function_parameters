@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+format_args() {
+    local -A _keyword_args=(["one"]=2 ["two"]=99)
+    local -a _positional_args=()
+    local _sep=
+
+    for _parameter in "$@"
+    do
+        if (echo "${_parameter}" | grep -q '^[[:alpha:]][[:alnum:]]*[=]')
+        then
+            _key="$(echo "${_parameter}" | sed -e 's/=.*$//g')"
+            _value="$(echo "${_parameter}" | sed -e 's/^.*=//g')"
+            _keyword_args["${_key}"]="${_value}"
+        else
+            _positional_args[${#_positional_args[@]}]="${_parameter}"
+        fi
+    done
+
+    echo -n "local -A kwargs=("
+    for _key in "${!_keyword_args[@]}"
+    do
+        echo -n " [\"${_key}\"]=\"$(echo "${_keyword_args["${_key}"]}" | sed -e 's/\"/\\\"/g')\""
+    done
+    echo " )"
+
+    echo -n "local -a args=("
+    for _value in "${_positional_args[@]}"
+    do
+        echo -n " \"$(echo "${_value}" | sed -e 's/\"/\\\"/g')\""
+    done
+    echo " )"
+}
+
+myfunc() {
+    format_args "$@"
+    eval "$(format_args "$@")"
+    echo "${!kwargs[@]}"
+    echo "${args[@]}"
+}
+
+myfunc one=1 two="the second one" 1 2 3 text="this guy doesn't have \"it\""

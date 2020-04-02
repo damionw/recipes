@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+
+http::basic_demo::response_index() {
+    http::301_redirect "/static/index.html"
+}
+
+http::basic_demo::response_get_test_data() {
+    http::response_json <<< '
+        {
+            "name": "The best",
+
+            "one": [
+                1,
+                2,
+                3,
+                4,
+            ]
+        }
+    '
+}
+
+http::basic_demo::url_mappings() {
+    url::add_handler '^\/$' GET http::basic_demo::response_index
+    url::add_handler '^\/index.html$' GET http::basic_demo::response_index
+    url::add_handler '^\/api\/testdata\/*$' GET http::basic_demo::response_get_test_data
+}
