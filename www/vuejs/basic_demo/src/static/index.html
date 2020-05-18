@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href='material.css'>
+    <link rel="stylesheet" href='font-awesome.css'>
+    <link rel="stylesheet" href="vuetify.css">
+    <link rel="stylesheet" href="basic_demo.css">
+
+    <script type="application/javascript" language="javascript" src="vue.js"></script>
+    <script type="application/javascript" language="javascript" src="vuetify.js"></script>
+    <script type="application/javascript" language="javascript" src="basic_demo.js"></script>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+</head>
+
+<body>
+    <div id="app">
+        <v-app>
+            <v-navigation-drawer
+                v-model="drawer"
+                fixed
+                clipped
+                hide-overlay = "false"
+                class="grey lighten-4"
+                disable-resize-watcher
+                app
+            >
+                <toolbar-menu>
+                </toolbar-menu>
+            </v-navigation-drawer>
+
+            <v-toolbar color="#23afca" app fixed dense clipped-left absolute=true >
+                <v-toolbar-side-icon @click="drawer = !drawer">
+                </v-toolbar-side-icon>
+
+                <v-toolbar-title>
+                    {{ application.description }}
+                </v-toolbar-title>
+
+                <v-spacer></v-spacer>
+
+                <v-btn icon light>
+                    <v-icon color="grey darken-2">search</v-icon>
+                </v-btn>
+            </v-toolbar>
+
+            <v-content pa-0 ma-0>
+                <v-container class="light-grey" fluid grid-list-md align-content-start fill-height pt-1 pl-1 pr-0 pb-2>
+                    <v-layout row fill-height>
+                        <v-flex xs4 sm4 fill-height style="height: 100%">
+                            <v-card style="height: 100%;">
+                                <toolbar-menu>
+                                </toolbar-menu>
+                            </v-card>
+                        </v-flex>
+
+                        <v-flex xs12 sm12 fill-height style="height: 100%">
+                            <v-card style="height: 100%;">
+                                <v-container fluid grid-list-md align-content-start fill-height pa-1>
+                                    <v-layout column fill-height mt-1>
+                                        <v-tabs
+                                            color="#af73fa"
+                                            slider-color="yellow"
+                                        >
+                                            <v-tab ripple>Primary</v-tab>
+                                            <v-tab-item pa-1>
+                                                <my-folder
+                                                ></my-folder>
+                                            </v-tab-item>
+                                            
+                                            <v-tab ripple>Details</v-tab>
+                                            <v-tab-item pa-1>
+                                                <my-form
+                                                ></my-form>
+                                            </v-tab-item>
+                                        </v-tabs>
+                                    </v-layout>
+                                </v-container>
+                            </v-card>
+                        </v-flex>
+                    </v-layout>
+                </v-container>
+            </v-content>
+
+            <v-footer class="secondary" app>
+                <v-layout row wrap align-center>
+                    <v-flex xs12>
+                        <div class="white--text ml-3">
+                            Made using <a class="white--text" href="https://vuetifyjs.com" target="_blank">Vuetify</a>
+                            by <a class="white--text" href="https://github.com/damionw" target="_blank">Damion Wilson</a>
+                        </div>
+                    </v-flex>
+                </v-layout>
+            </v-footer>
+        </v-app>
+    </div>
+
+    <script type="text/x-template" id="my-folder">
+        <v-container fluid grid-list-xs justify-start pa-0>
+            <v-subheader>Global</v-subheader>
+
+            <v-list-tile @click="handle_folder_event">
+                <v-list-tile-action>
+                    <v-icon large color="purple darken-2">domain</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                    <v-list-tile-title class="blue--text">Global Settings</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+        </v-container>
+    </script>
+
+    <script type="text/x-template" id="my-form">
+        <v-container fluid grid-list-xs justify-start pa-1>
+            <v-layout column pa-1 ma-1>
+                <v-text-field
+                    single-line
+                    label="Name"
+                    v-model="name"
+                    required
+                ></v-text-field>
+                <v-text-field
+                    single-line
+                    label="Age"
+                    v-model="age"
+                ></v-text-field>
+            </v-layout>
+        </v-container>
+    </script>
+
+    <script type="text/x-template" id="toolbar-menu">
+        <v-list dense class="dark-grey">
+            <v-layout row align-center>
+                <v-flex xs6>
+                    <v-subheader>Main</v-subheader>
+                </v-flex>
+            </v-layout>
+
+            <v-list-tile @click="preferences">
+                <v-list-tile-action>
+                    <v-icon>add</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                    <v-list-tile-title class="grey--text">Preferences</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+
+            <v-divider></v-divider>
+
+            <v-list-tile @click="save">
+                <v-list-tile-action>
+                    <v-icon>close</v-icon>
+                </v-list-tile-action>
+
+                <v-list-tile-content>
+                    <v-list-tile-title class="grey--text">Save</v-list-tile-title>
+                </v-list-tile-content>
+            </v-list-tile>
+        </v-list>
+    </script>
+</body>
+</html>
