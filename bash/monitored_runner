@@ -7,12 +7,16 @@ command="$1"
 shift
 
 stop() {
-    pids="$(pstree -p ${1:?Need pid} | sed -e 's/---/\n/g' -e 's/[^\(]*[\(]//g' -e 's/[\)].*$//g')"
+    pids="$(
+        pstree -p ${1:?Need pid} |
+        sed -e 's/---/\n/g' | # sed won't parse newly created lines as separate input !
+        sed -e 's/[^\(]*[\(]//g' -e 's/[\)]$//g'
+    )"
 
     if [ -n "${pids}" ]
     then
-        echo "Stopping $pids" >&2
-        kill -9 $pids
+        echo "Stopping" $pids >&2
+        kill $pids
     fi
 }
 
@@ -22,7 +26,7 @@ then
     exit 225
 fi
 
-trap "run=false" 1 2 3 15
+trap "echo 'Stopped by user'; run=false" 1 2 3 15
 
 run=true pid= previous_hash= && while $run
 do
