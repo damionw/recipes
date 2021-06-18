@@ -4,6 +4,9 @@ all: $(executable)
 
 .PHONY := clean
 
+demo: all
+	./$(executable)
+
 $(executable): main.rs
 	rustc $< -o $@
 
