@@ -8,3 +8,4 @@ edition = "2018"
 
 [dependencies]
 polars = "0.14.2"
+mimalloc = { version = "*", default-features = false }
