@@ -4,7 +4,7 @@ fn schema() -> Schema {
     Schema::new(
         vec![
             Field::new("One", DataType::Utf8),
-            Field::new("Two", DataType::UInt32),
+            Field::new("Two", DataType::Float64),
         ]
     )
 }
@@ -18,7 +18,7 @@ fn fetch(path: &str) -> Result<DataFrame> {
 fn main() -> Result<()> {
     let df = fetch("demo.csv")?;
 
-    println!("Hello, world!");
+    println!("Rows = {}", df.height());
 
     Ok(())
 }
