@@ -1,3 +1,7 @@
+/* DEPRECATED: Use fetch()
+    https://blog.openreplay.com/ajax-battle-xmlhttprequest-vs-the-fetch-api
+*/
+
 /* USAGE: function my_request(){
     ajaxFunction(
         "/ajax/my_url",
