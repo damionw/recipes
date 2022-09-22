@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+function_wrap() {
+   name=${1:?Need function name}
+   shift
+
+   eval "${name}() {
+       bash <<< 'exec -a \"${name}\" bash <<< \"$@\"'
+   }"
+}
+
+function_wrap TestProcess_1 "ps awx; sleep 10"
+function_wrap TestProcess_2 "sleep 10"
+
+process
