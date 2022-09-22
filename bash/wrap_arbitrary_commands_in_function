@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+wrap() {
+   name=${1:?Need function name}
+   shift
+
+   eval "${name}() {
+       $@
+   }"
+}
+
+wrap myfunction ls -l /etc/passwd /etc/hosts\; whoami
+
+for ((i=0; i < 3; ++i)) {
+    myfunction
+}
