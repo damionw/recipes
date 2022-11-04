@@ -1,5 +1,4 @@
 all: venv packages
-	# venv/bin/maturin develop
 	venv/bin/maturin build --out packages
 
 install: all
