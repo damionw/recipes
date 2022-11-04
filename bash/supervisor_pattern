@@ -1,0 +1,64 @@
+#!/usr/bin/env bash
+
+function_wrap() {
+   name=${1:?Need function name}
+   shift
+
+   eval "${name}() {
+       bash <<< 'exec -a \"${name}\" bash <<< \"$@\"'
+   }"
+}
+
+function_wrap TestProcess_1 "echo Hello 1; sleep 25; echo exiting '$$'"
+function_wrap TestProcess_2 "echo Hello 2; sleep 10; echo exiting '$$'"
+
+task_definitions() {
+    echo TestProcess_1 "My first test process"
+    echo TestProcess_2 "My second test process"
+}
+
+declare -A tasklist=()
+
+start() {
+    local _interval=${1:-3}
+    local _service _pid _description
+
+    while true
+    do
+        while read _service _description <&17
+        do
+            _pid=${tasklist[${_service}]}
+
+            if [ -n "${_pid}" -a -d /proc/${_pid} ]
+            then
+                echo "${_service} is running" >&2
+                continue
+            fi
+
+            echo "${_pid:+(re)}Starting missing ${_service} (${_description})" >&2
+            ${_service} & _pid=$!
+
+            if [ -n "${_pid}" ]
+            then
+                tasklist[${_service}]=${_pid}
+            fi
+        done 17<<< "$(task_definitions)"
+
+        sleep ${_interval}
+    done
+}
+
+stop() {
+    if (( ${#tasklist[@]} > 0 ))
+    then
+        echo "Stopping ${tasklist[@]}" >&2
+        kill -HUP ${tasklist[@]}
+        wait ${tasklist[@]}
+        unset tasklist
+    fi
+
+    exit
+}
+
+trap stop 1 2 3
+start
