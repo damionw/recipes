@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+
+process_message() {
+    local _jsondata
+    _jsondata="${1:?Need to provide a message}" || return $?
+    jq -r '.' <<< "${_jsondata}"
+}
+
+convert_hex_message() {
+    local _hexdata _time _topic
+
+    _time="${1:?Need to provide delivery time}" || return $?
+    _topic="${2:?Need to provide message time}" || return $?
+    _hexdata="${3:?Need to provide a hex encoded message}" || return $?
+
+    jq -r ".+={\"mqtt_delivery_time\": \"${_time}\", \"mqtt_topic\": \"${_topic}\"}" <<< "$(
+        printf "$(
+            sed -e 's/\(..\)/\\x\1/g' <<< "${_hexdata}"
+        )"
+    )"
+}
+
+subscriptions() {
+#   echo Energy/+
+    echo Service/+
+}
+
+# In order to stream JSON messages, we convert to hex so that we can separate them
+# before feeding then individually to jq (and any handlers)
+mosquitto_sub -h mqtt \
+    $(subscriptions | while read sub; do echo ${sub:+-t }${sub}; done) \
+    -F "%l %I %t %x\n" \
+    -N |
+while read count time topic hexbytes
+do
+    if jsontext="$(convert_hex_message "$time" "$topic" "${hexbytes}")"
+    then
+        process_message "${jsontext}"
+    fi
+done
