@@ -6,8 +6,8 @@ export LD_LIBRARY_PATH := /usr/lib/qt5/lib:$(LD_LIBRARY_PATH)
 all:
 	cargo build --color never
 
-run: all
-	cargo run
+run demo: all
+	cargo run --color never
 
 clean:
-	cargo clean
+	cargo clean --color never
