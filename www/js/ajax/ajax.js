@@ -68,7 +68,7 @@ function ajaxFunction(url, result_callback, error_callback, method, data){
         else if (ajaxRequest.status != 200){
             error_callback(new ajaxException(url, "&lt;unavailable&gt;"));
         }
-        else{
+        else if (ajaxRequest.responseText != null && ajaxRequest.responseText.length) {
             result_callback(eval("(" + ajaxRequest.responseText + ")"));
         }
     }
