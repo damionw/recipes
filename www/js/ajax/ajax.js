@@ -69,7 +69,7 @@ function ajaxFunction(url, result_callback, error_callback, method, data){
             error_callback(new ajaxException(url, "&lt;unavailable&gt;"));
         }
         else{
-            result_callback(eval("(" + ajaxRequest.responseText + ")"));
+            result_callback(eval("(" + ajaxRequest.responseText + ");"));
         }
     }
 
