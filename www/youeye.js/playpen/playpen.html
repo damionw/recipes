@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US">
+    <head>
+        <title>Demo Application</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+        <link rel="stylesheet" href="font-awesome.css">
+        <link rel="stylesheet" href="tabulator.css">
+
+        <script
+            type="application/javascript"
+            language="javascript"
+            src="tabulator.js"
+        >
+        </script>
+
+        <script
+            type="application/javascript"
+            language="javascript"
+            src="youeye.js"
+        >
+        </script>
+    </head>
+
+    <body>
+        <ui-configuration
+            application_background="#b0b0b0"
+            application_foreground="black"
+            toolbar_height=45px
+            padding="10px"
+        ></ui-configuration>
+
+        <ui-frame orientation="vertical" pad=false>
+            <ui-toolbar normal_background="#00c0ff">
+                <ui-toolbar width=100% normal_foreground=white justify=left pad=false>
+                    <ui-button clickedsignal="menu_toggle">
+                        <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
+
+                        <ui-transient
+                            subscribe="menu_toggle,menu_show,menu_hide"
+                            listener="main_menu_handler"
+                            relative="true"
+                            normal_foreground="black"
+                            normal_background="#e2eeee"
+                            y="50px"
+                            width="180px"
+                        >
+                            <ui-button highlight="-16" clickedsignal="clear_table_data">
+                                New...
+                            </ui-button>
+                        </ui-transient>
+                    </ui-button>
+                </ui-toolbar>
+            </ui-toolbar>
+
+            <ui-frame orientation="horizontal" pad=false>
+                <ui-pane
+                    normal_background=#f0f0fe
+                    shadow_depth=5px
+                    border_radius=8px
+                    pad=false
+                    height=500px
+                    width=90%
+                >
+                    <div
+                        id="table"
+                        subscribe="load_table_data,clear_table_data"
+                        listener="tabular_event"
+                    >
+                    </div>
+                </ui-pane>
+            </ui-frame>
+        </ui-frame>
+    </body>
+    
+    <script
+        type="application/javascript"
+        language="javascript"
+        src="playpen.js"
+    >
+    </script>
+</html>
