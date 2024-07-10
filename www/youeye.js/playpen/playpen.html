@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-US">
     <head>
-        <title>Demo Application</title>
+        <title>YouEye Playpen</title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
@@ -46,7 +46,7 @@
                             y="50px"
                             width="180px"
                         >
-                            <ui-button highlight="-16" clickedsignal="clear_table_data">
+                            <ui-button highlight="-16" clickedsignal="initialize_table">
                                 New...
                             </ui-button>
                         </ui-transient>
@@ -65,7 +65,7 @@
                 >
                     <div
                         id="table"
-                        subscribe="load_table_data,clear_table_data"
+                        subscribe="load_table,initialize_table"
                         listener="tabular_event"
                     >
                     </div>

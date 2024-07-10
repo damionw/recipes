@@ -15,6 +15,9 @@ all: 	font-awesome.css \
 	tabulator.js \
 	youeye.js
 
+youeye.js: checkouts/youeye.js/build/static/youeye.js
+	@cp $< $@
+
 font-awesome.css: all.min.css
 	@sed -e 's/url/\nurl/g' < $< | \
 	grep '^url' | \
@@ -47,11 +50,11 @@ tabulator.js:
 
 # See: https://tabulator.info/
 # NOTE: See TABULATOR_MODE
-tabulator.css: build/static
+tabulator.css:
 	@wget $(WGET_OPTIONS) -nd -nH -O $@ https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator$(if $(TABULATOR_MODE),_,)$(TABULATOR_MODE).min.css
 
 # See: https://github.com/andrepxx/pure-knob
-pureknob.js: checkouts/pureknob | build/static
+pureknob.js: checkouts/pureknob
 	@install $</$(notdir $@) $@
 
 checkouts/youeye.js/build/static/youeye.js: checkouts/youeye.js
@@ -69,7 +72,7 @@ checkouts/pubber: | checkouts
 checkouts/pureknob: | checkouts
 	@(cd "$@" >/dev/null 2>&1 && git pull) || git clone https://github.com/andrepxx/pure-knob $@
 
-checkouts/quill: checkouts
+checkouts/quill: | checkouts
 	@(cd "$<" && wget $(WGET_OPTIONS) -nc -nd -nH -O - https://github.com/quilljs/quill/releases/download/v0.20.1/quill.tar.gz | tar xfz -)
 
 checkouts:
