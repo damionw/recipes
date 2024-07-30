@@ -25,7 +25,7 @@ build/bin/runner: build/bin checkouts/recipes
 	@cp checkouts/recipes/bash/monitored_runner $@
 
 build/bin/webserve: build/bin checkouts/webserve
-	@cp checkouts/webserve/src/$(notdir $@) $@
+	@cp checkouts/webserve/src/bin/$(notdir $@) $@
 
 build/static/d3.min.js: build/static
 	@curl -q -s https://d3js.org/d3.v4.min.js -o $@
