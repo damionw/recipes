@@ -73,7 +73,7 @@ checkouts/pureknob: | checkouts
 	@(cd "$@" >/dev/null 2>&1 && git pull) || git clone https://github.com/andrepxx/pure-knob $@
 
 checkouts/quill: | checkouts
-	@(cd "$<" && wget $(WGET_OPTIONS) -nc -nd -nH -O - https://github.com/quilljs/quill/releases/download/v0.20.1/quill.tar.gz | tar xfz -)
+	@(cd "$|" && wget $(WGET_OPTIONS) -nc -nd -nH -O - https://github.com/quilljs/quill/releases/download/v0.20.1/quill.tar.gz | tar xfz -)
 
 checkouts:
 	@install -d $@
