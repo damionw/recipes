@@ -6,6 +6,9 @@ CHARTS_VERSION := 3.8.2
 FONTAWESOME_URL := https://cdnjs.cloudflare.com/ajax/libs/font-awesome/$(FONTAWESOME_VERSION)
 WGET_OPTIONS := --no-check-certificate --quiet
 
+SERVICE_PORT ?= 17002
+SERVICE_ADDRESS ?= 127.0.0.1
+
 all: 	font-awesome.css \
 	Chart.js \
 	pureknob.js \
@@ -14,6 +17,12 @@ all: 	font-awesome.css \
 	tabulator.css \
 	tabulator.js \
 	youeye.js
+
+run-server: all
+	@busybox httpd \
+                -f \
+                -p "$(SERVICE_ADDRESS):$(SERVICE_PORT)" \
+                -h "$(realpath .)" \
 
 youeye.js: checkouts/youeye.js/build/static/youeye.js
 	@cp $< $@

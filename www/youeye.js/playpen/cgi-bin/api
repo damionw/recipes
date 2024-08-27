@@ -1,0 +1,171 @@
+#!/usr/bin/env bash
+
+#===================================================================================
+#                           CGI Documentation
+#===================================================================================
+# busybox httpd will run cgi scripts underneath the cgi-bin directory, using
+# the script name as the folder
+#
+# e.g.
+#       http://127.0.0.1:1234/cgi-bin/<name>...
+#       will run the script
+#       cgi-bin/<name> and pass everything following as the PATH_INFO
+#
+# See
+#     PATH_INFO=/api/fred
+#     QUERY_STRING=one=1
+#     REQUEST_METHOD=GET
+#     REQUEST_SCHEME=http
+#     REQUEST_URI=/api/fred?one=1
+#     SCRIPT_FILENAME=/opt/dashboards/share/dashboards/rc/dashboards.cgi
+#     SCRIPT_NAME=/api/fred
+#     SERVER_ADDR=127.0.0.1
+#     SERVER_PORT=8277
+
+#===================================================================================
+#                           Constants
+#===================================================================================
+CGI_REQUEST_PREFIX="cgi::response::"
+
+#===================================================================================
+#                           CGI Request Handling
+#===================================================================================
+cgi::request_handler() {
+    local _prefix="${CGI_REQUEST_PREFIX}"
+
+    local _function_name="$(
+        echo "${PATH_INFO}" |
+        sed -e 's|^/||g' -e 's|/|::|g' |
+        tr 'A-Z' 'a-z'
+    )"
+
+    _function_name="${_function_name:-manifest}"
+
+    local HTTP_CODE=(
+        [200]="OK"
+        [400]="Bad Request"
+        [403]="Forbidden"
+        [404]="Not Found"
+        [405]="Method Not Allowed"
+        [500]="Internal Server Error"
+    )
+
+    local _status
+
+    (declare -F | awk '$NF ~ /^'"${_prefix}${_function_name}"'$/ {print $NF;}') || {
+        _status=$?
+
+        cgi::request_error 404 "$(
+            echo "${_function_name} not available via url ${SCRIPT_NAME}${PATH_INFO}"
+        )" text/plain
+
+        return ${_status}
+    }
+
+    local _response _parameters=$(cgi::get_parameters)
+
+    _response="$("${_prefix}${_function_name}" ${_parameters})" || {
+        _status=$?
+
+        local _error_reponse="${_response}"
+
+        # Try to let the handler provide an error content generator first
+        _response="$("${_prefix}${_function_name}::error_content" "${_parameters}" 2>/dev/null)" || {
+            _response="$(
+                cgi::request_error 500 "$(
+                    echo "${_function_name} failed via url ${SCRIPT_NAME}${PATH_INFO}"
+                    echo "${_error_response}"
+                )" text/plain
+            )"
+        }
+
+        echo "${_response}"
+        return ${_status}
+    }
+
+    echo "${_response}"
+}
+
+cgi::response_header() {
+    local _code=${1:-200}
+    local _content_type="${2:-application/json}"
+
+    echo "HTTP/1.1 ${_code} ${HTTP_CODE[${_code}]}"
+    echo "Content-type: ${_content_type}"
+    echo ""
+}
+
+cgi::request_error() {
+    local _status=$?
+    local _code="${1}"
+    local _content="${2:-Unspecified Error}"
+    local _type="${3:-text/plain}"
+
+    cgi::response_header "${_code}" "${_type}"
+    echo "${_content}"
+    return ${_status}
+}
+
+#===================================================================================
+#                          Request parameters
+#===================================================================================
+cgi::get_parameters() {
+    echo "${1:-${QUERY_STRING}}" |
+    tr '&' '\n' |
+    sed -e 's/=/ /1'
+}
+
+#===================================================================================
+#                              Responses
+#===================================================================================
+cgi::response::manifest() {
+    # Produce a list of api functions
+
+    local _prefix="${CGI_REQUEST_PREFIX}"
+    local _function _separator
+
+    cgi::response_header 200 application/json
+
+    declare -F |
+    awk '{print $NF;}' |
+    grep "^${_prefix}" |
+    grep -v '::error_content$' |
+    sed -e "s|^${_prefix}||g" -e 's|::|/|g' | {
+        echo "["
+
+        while read _function
+        do
+            echo "${_separator}\"http://${HTTP_HOST}${SCRIPT_NAME}/${_function}\""
+            _separator=","
+        done
+
+        echo "]"
+    }
+}
+
+cgi::response::status() {
+    cgi::response_header 200 application/json
+
+    echo "{
+        \"parameters\": \"$(cgi::get_parameters)\",
+        \"PATH_INFO\": \"${PATH_INFO}\",
+        \"QUERY_STRING\": \"${QUERY_STRING}\",
+        \"REQUEST_METHOD\": \"${REQUEST_METHOD}\",
+        \"REQUEST_SCHEME\": \"${REQUEST_SCHEME}\",
+        \"REQUEST_URI\": \"${REQUEST_URI}\",
+        \"SCRIPT_FILENAME\": \"${SCRIPT_FILENAME}\",
+        \"SCRIPT_NAME\": \"${SCRIPT_NAME}\",
+        \"SERVER_ADDR\": \"${SERVER_ADDR}\",
+        \"SERVER_PORT\": \"${SERVER_PORT}\"
+    }"
+}
+
+cgi::response::whatever() {
+    cgi::response_header 200 application/json
+    echo '{"here": [1,2,3]}'
+}
+
+#===================================================================================
+#                           CGI Entrypoint
+#===================================================================================
+cgi::request_handler
