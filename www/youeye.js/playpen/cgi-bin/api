@@ -36,10 +36,15 @@ cgi::request_handler() {
     local _function_name="$(
         echo "${PATH_INFO}" |
         sed -e 's|^/||g' -e 's|/|::|g' |
-        tr 'A-Z' 'a-z'
+        tr 'A-Z' 'a-z' | {
+            if read _name && [[ -n "${_name}" ]]
+            then
+                echo "${_name}"
+            else
+                echo "manifest"
+            fi
+        }
     )"
-
-    _function_name="${_function_name:-manifest}"
 
     local HTTP_CODE=(
         [200]="OK"
