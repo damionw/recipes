@@ -19,6 +19,7 @@ all: 	font-awesome.css \
 	youeye.js
 
 run-server: all
+	@echo "Running http service on $(SERVICE_ADDRESS):$(SERVICE_PORT)" >&2
 	@busybox httpd \
                 -f \
                 -p "$(SERVICE_ADDRESS):$(SERVICE_PORT)" \

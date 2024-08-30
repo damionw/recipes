@@ -170,6 +170,53 @@ cgi::response::whatever() {
     echo '{"here": [1,2,3]}'
 }
 
+cgi::response::processes() {
+    local -a _sep
+    local _pid _key _value
+
+    get_pid_list() {
+        ls -1 /proc |
+        grep '^[0-9][0-9]*$' |
+        sort -n
+    }
+
+    get_pid_info() {
+        local _pid
+        _pid="${1:?Need to provide process id}"
+        echo "pid" "${_pid}"
+    }
+
+    cgi::response_header 200 application/json
+
+    echo "{
+        \"processes\": [
+            $(
+                get_pid_list | {
+                    _sep[0]=
+
+                    while read _pid
+                    do
+                        echo "${_sep[0]}{"
+
+                        get_pid_info "${_pid}" | {
+                            _sep[1]=
+
+                            while read _key _value
+                            do
+                                echo "${_sep[1]}\"${_key}\": \"${_value}\""
+                                _sep[1]=","
+                            done
+                        }
+
+                        echo "}"
+                        _sep[0]=","
+                    done
+                }
+            )
+        ]
+    }"
+}
+
 #===================================================================================
 #                           CGI Entrypoint
 #===================================================================================
