@@ -172,7 +172,7 @@ cgi::response::whatever() {
 
 cgi::response::processes() {
     local -a _sep
-    local _pid _key _value
+    local _pid _key _value _process_details
 
     get_pid_list() {
         ls -1 /proc |
@@ -181,9 +181,28 @@ cgi::response::processes() {
     }
 
     get_pid_info() {
-        local _pid
+        local _pid _cmdline _executable _name _info
+
         _pid="${1:?Need to provide process id}"
+        _info="/proc/${_pid}/cmdline"
+
+        # Skip processes without a cmdline
+        [[ ! -e "${_info}" ]] && return $?
+
+        _cmdline="$(tr '\0' '\n' < "${_info}")" || return $?
+
+        _executable=$(
+            head -1 <<< "${_cmdline}" | (read _name _ && echo "${_name}")
+         )
+
+        _name="$(basename "${_executable}")"
+
+        # Skip processes without a command
+        [[ -z "${_name}" ]] && return $?
+
         echo "pid" "${_pid}"
+        echo "name" "${_name}"
+        echo "cmd" "${_executable}"
     }
 
     cgi::response_header 200 application/json
@@ -196,9 +215,17 @@ cgi::response::processes() {
 
                     while read _pid
                     do
+                        if ! _process_details="$(get_pid_info "${_pid}")"
+                        then
+                            continue
+                        elif [[ -z "${_process_details}" ]]
+                        then
+                            continue
+                        fi
+
                         echo "${_sep[0]}{"
 
-                        get_pid_info "${_pid}" | {
+                        echo "${_process_details}" | {
                             _sep[1]=
 
                             while read _key _value
@@ -209,6 +236,7 @@ cgi::response::processes() {
                         }
 
                         echo "}"
+
                         _sep[0]=","
                     done
                 }
