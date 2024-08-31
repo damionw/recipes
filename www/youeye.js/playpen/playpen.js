@@ -78,3 +78,20 @@ function tabular_event(topic, payload) {
             break;
     }
 }
+
+// async function get_process_info() {
+//     const url = "/cgi-bin/api/processes"
+// ;
+//     try {
+//         const response = await fetch(url);
+//
+//         if (!response.ok) {
+//             throw new Error(`Response status: ${response.status}`);
+//         }
+//
+//         const json = await response.json();
+//         console.log(json);
+//     } catch (error) {
+//         console.error(error.message);
+//     }
+}
