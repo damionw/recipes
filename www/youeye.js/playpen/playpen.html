@@ -49,6 +49,9 @@
                             <ui-button highlight="-16" clickedsignal="initialize_table">
                                 New...
                             </ui-button>
+                            <ui-button highlight="-16" clickedsignal="toggle_dialog_visibility">
+                                Other...
+                            </ui-button>
                         </ui-transient>
                     </ui-button>
                 </ui-toolbar>
@@ -65,13 +68,39 @@
                 >
                     <div
                         id="table"
-                        subscribe="load_table,initialize_table"
+                        subscribe="load_table,initialize_table,show_form"
                         listener="tabular_event"
                     >
                     </div>
                 </ui-pane>
             </ui-frame>
         </ui-frame>
+
+        <div
+            subscribe="toggle_dialog_visibility,suppress_dialog_visibility"
+            listener=dialog_event_handler
+            style="display: None; position: fixed; left: 25%; top: 25%;"
+        >
+            <div
+                style="font-size: 26px; float: right; width: 100%;"
+                onclick="pubsubMessageRouter.singleton.emit('suppress_dialog_visibility', null);"
+            >
+                <i
+                    class="fa fa-times"
+                    aria-hidden="true"
+                    style="float: right; border-radius: 100%; background-color: rgba(0,255,0,0.5); color: black;"
+                >
+                </i>
+            </div>
+
+            <ui-pane
+                normal_background=yellow
+                shadow_depth=5px
+                border_radius=8px
+            >
+                Whatever
+            </ui-pane>
+        </div>
     </body>
     
     <script

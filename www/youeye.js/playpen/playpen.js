@@ -79,6 +79,24 @@ function tabular_event(topic, payload) {
     }
 }
 
+function dialog_event_handler(topic, payload) {
+    var visible = (this.style.display != "none");
+    const off = "none";
+    const on = "inline";
+
+    if (topic == "suppress_dialog_visibility") {
+        this.style.display = off;
+    }
+    else if (topic == "express_dialog_visibility") {
+        this.style.display = on;
+    }
+    else if (topic == "toggle_dialog_visibility") {
+        this.style.display = (
+            visible ? off : on
+        );
+    }
+}
+
 // async function get_process_info() {
 //     const url = "/cgi-bin/api/processes"
 // ;
@@ -94,4 +112,4 @@ function tabular_event(topic, payload) {
 //     } catch (error) {
 //         console.error(error.message);
 //     }
-}
+// }
