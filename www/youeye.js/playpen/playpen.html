@@ -46,9 +46,10 @@
                             y="50px"
                             width="180px"
                         >
-                            <ui-button highlight="-16" clickedsignal="initialize_table">
-                                New...
+                            <ui-button highlight="-16" clickedsignal="reload_data">
+                                Reload
                             </ui-button>
+
                             <ui-button highlight="-16" clickedsignal="toggle_dialog_visibility">
                                 Other...
                             </ui-button>
@@ -68,7 +69,7 @@
                 >
                     <div
                         id="table"
-                        subscribe="load_table,initialize_table,show_form"
+                        subscribe="reload_data,table_row_selected"
                         listener="tabular_event"
                     >
                     </div>
@@ -77,23 +78,25 @@
         </ui-frame>
 
         <div
-            subscribe="toggle_dialog_visibility,suppress_dialog_visibility"
+            subscribe="toggle_dialog_visibility,express_dialog_visibility,suppress_dialog_visibility"
             listener=dialog_event_handler
-            style="display: None; position: fixed; left: 25%; top: 25%;"
+            style="display: None; position: fixed; left: 25%; top: 25%; padding: 10px"
         >
             <div
-                style="font-size: 26px; float: right; width: 100%;"
+                style="font-size:26px; float: right; width: 100%;"
                 onclick="pubsubMessageRouter.singleton.emit('suppress_dialog_visibility', null);"
             >
                 <i
                     class="fa fa-times"
                     aria-hidden="true"
-                    style="float: right; border-radius: 100%; background-color: rgba(0,255,0,0.5); color: black;"
+                    style="float: right; border-radius: 100%; padding: 5px; background-color: rgba(168,168,168,0.40); color: black;"
                 >
                 </i>
             </div>
 
             <ui-pane
+                subscribe="table_row_selected"
+                listener=process_edit_handler
                 normal_background=yellow
                 shadow_depth=5px
                 border_radius=8px
