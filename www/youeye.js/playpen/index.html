@@ -1,8 +1,45 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html lang="en-US">
     <head>
-        <meta http-equiv="refresh" content="0; url=/playpen.html" />
+<!--         <meta http-equiv="refresh" content="0; url=/playpen.html" /> -->
     </head>
     <body>
+        <table
+            id="contents"
+            style="margin: 10px; padding: 5px; font-size: 20px;"
+        >
+        </table>
     </body>
+
+    <script type="application/javascript">
+        function load_table_data(data) {
+            data.forEach(
+                function(row_details) {
+                    if (row_details.label == "index") {
+                        return;
+                    }
+
+                    const table_element = document.getElementById("contents");
+                    var table_row = table_element.insertRow();
+                    table_row.innerHTML = `<td><a href="${row_details.filename}">${row_details.label}</a></td>`;
+                }
+            );
+        }
+
+        async function get_process_info() {
+            const url = "/cgi-bin/api/page_index";
+
+            const response = await fetch(url);
+
+            if (!response.ok) {
+                throw new Error(`Response status: ${response.status}`);
+            }
+
+            const data = await response.json();
+
+            load_table_data(data);
+        }
+
+        get_process_info();
+    </script>
 </html

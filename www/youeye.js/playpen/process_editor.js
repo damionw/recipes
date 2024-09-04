@@ -12,6 +12,9 @@ function main_menu_handler(topic, payload) {
 
 function tabular_event(topic, payload) {
     switch(topic) {
+        case "update_table_row":
+            break;
+
         case "reload_data":
             get_process_info(this);
             break;
@@ -47,15 +50,23 @@ function dialog_event_handler(topic, payload) {
 function process_form_handler(topic, payload) {
     switch(topic) {
         case "save_process_info":
-            console.log(this.value); // FIXME: Update the table row data
+            pubsubMessageRouter.singleton.emit(
+                "update_table_row", {
+                    "row": 0,
+                    "data": this.value
+                }
+            );
+
             break;
 
         case "table_row_selected":
             var output_html = "<tr><td>Name</td><td>Value</td></tr>";
 
-            const column_labels = Object.keys(payload);
+            const rowdata = payload.data;
 
-            for (const [key, value] of Object.entries(payload)) {
+            const column_labels = Object.keys(rowdata);
+
+            for (const [key, value] of Object.entries(rowdata)) {
                 const value_spec = '<td><textarea form-name="' + key + '" form-attribute="value">' + value + '</textarea></td>';
                 const key_spec = "<td>" + key + "</td>";
                 output_html += "<tr>" + key_spec + value_spec + "</tr>";
@@ -121,12 +132,13 @@ function load_table_data(target_element, data) {
     );
 
     tabulator.on(
-        "rowSelected", // "rowSelectionChanged",
+        "rowDblClick", // "rowSelected", // "rowSelectionChanged",
 
-        function(row_object){
+        function(e, row_object){
             pubsubMessageRouter.singleton.emit(
-                "table_row_selected",
-                row_object.getData()
+                "table_row_selected", {
+                    "data": row_object.getData()
+                }
             );
         }
     );
@@ -134,7 +146,7 @@ function load_table_data(target_element, data) {
     tabulator.on(
         "tableBuilt",
 
-        function(){
+        function(e){
             tabulator.replaceData(process_info);
         }
     );

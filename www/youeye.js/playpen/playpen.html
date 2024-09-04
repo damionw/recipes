@@ -32,7 +32,7 @@
         ></ui-configuration>
 
         <ui-frame orientation="vertical" pad=false>
-            <ui-toolbar normal_background="#00c0ff">
+            <ui-toolbar normal_background="green">
                 <ui-toolbar width=100% normal_foreground=white justify=left pad=false>
                     <ui-button clickedsignal="menu_toggle">
                         <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
@@ -46,12 +46,8 @@
                             y="50px"
                             width="180px"
                         >
-                            <ui-button highlight="-16" clickedsignal="reload_data">
-                                Reload
-                            </ui-button>
-
-                            <ui-button highlight="-16" clickedsignal="toggle_dialog_visibility">
-                                Other...
+                            <ui-button highlight="-16" clickedsignal="load_file">
+                                File...
                             </ui-button>
                         </ui-transient>
                     </ui-button>
@@ -67,45 +63,10 @@
                     height=500px
                     width=90%
                 >
-                    <div
-                        id="table"
-                        subscribe="reload_data"
-                        listener="tabular_event"
-                    >
-                    </div>
+                    Nothing here yet
                 </ui-pane>
             </ui-frame>
         </ui-frame>
-
-        <div
-            subscribe="toggle_dialog_visibility,express_dialog_visibility,suppress_dialog_visibility"
-            listener=dialog_event_handler
-            style="display: None; position: fixed; left: 25%; top: 25%; padding: 10px"
-        >
-            <div
-                style="font-size:26px; float: right; width: 100%;"
-                onclick="pubsubMessageRouter.singleton.emit('suppress_dialog_visibility', null);"
-            >
-                <i
-                    class="fa fa-times"
-                    aria-hidden="true"
-                    style="float: right; border-radius: 100%; padding: 5px; background-color: rgba(168,168,168,0.40); color: black;"
-                >
-                </i>
-            </div>
-
-            <ui-pane
-                normal_background=#f0f0d0
-                shadow_depth=10px
-                border_radius=30px
-            >
-                <ui-form
-                    subscribe="table_row_selected,save_process_info"
-                    listener=process_form_handler
-                >
-                </ui-form>
-            </ui-pane>
-        </div>
     </body>
     
     <script
@@ -117,7 +78,7 @@
 
     <script type="application/javascript">
         pubsubMessageRouter.singleton.emit(
-            "reload_data",
+            "initialize",
             null
         );
     </script>

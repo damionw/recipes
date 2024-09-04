@@ -1,8 +1,9 @@
 .PHONY: clean
 
+TABULATOR_VERSION ?= 5.5.2
 TABULATOR_MODE := bootstrap5
-FONTAWESOME_VERSION := 6.4.2
-CHARTS_VERSION := 3.8.2
+FONTAWESOME_VERSION ?= 6.4.2
+CHARTS_VERSION ?= 3.8.2
 FONTAWESOME_URL := https://cdnjs.cloudflare.com/ajax/libs/font-awesome/$(FONTAWESOME_VERSION)
 WGET_OPTIONS := --no-check-certificate --quiet
 
@@ -56,12 +57,12 @@ quill.min.js quill.snow.css: checkouts/quill
 
 # See: https://tabulator.info/
 tabulator.js:
-	@wget $(WGET_OPTIONS) -nd -nH -O $@ https://unpkg.com/tabulator-tables@5.5.2/dist/js/tabulator.min.js
+	@wget $(WGET_OPTIONS) -nd -nH -O $@ https://unpkg.com/tabulator-tables@$(TABULATOR_VERSION)/dist/js/tabulator.min.js
 
 # See: https://tabulator.info/
 # NOTE: See TABULATOR_MODE
 tabulator.css:
-	@wget $(WGET_OPTIONS) -nd -nH -O $@ https://unpkg.com/tabulator-tables@5.5.2/dist/css/tabulator$(if $(TABULATOR_MODE),_,)$(TABULATOR_MODE).min.css
+	@wget $(WGET_OPTIONS) -nd -nH -O $@ https://unpkg.com/tabulator-tables@$(TABULATOR_VERSION)dist/css/tabulator$(if $(TABULATOR_MODE),_,)$(TABULATOR_MODE).min.css
 
 # See: https://github.com/andrepxx/pure-knob
 pureknob.js: checkouts/pureknob
