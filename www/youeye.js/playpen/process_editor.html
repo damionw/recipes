@@ -4,6 +4,7 @@
         <title>YouEye Playpen</title>
 
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="pragma" content="no-cache">
 
         <link rel="stylesheet" href="font-awesome.css">
         <link rel="stylesheet" href="tabulator.css">
@@ -69,7 +70,7 @@
                 >
                     <div
                         id="table"
-                        subscribe="reload_data,update_table_row",
+                        subscribe="reload_data",
                         listener="tabular_event"
                     >
                     </div>
@@ -83,13 +84,13 @@
             style="display: None; position: fixed; left: 25%; top: 25%; padding: 10px"
         >
             <div
-                style="font-size:26px; float: right; width: 100%;"
+                style="font-size: 26px; float: right; width: 100%;"
                 onclick="pubsubMessageRouter.singleton.emit('suppress_dialog_visibility', null);"
             >
                 <i
                     class="fa fa-times"
                     aria-hidden="true"
-                    style="float: right; border-radius: 100%; padding: 5px; background-color: rgba(168,168,168,0.40); color: black;"
+                    style="float: right; border-radius: 100%; padding: 5px; background-color: rgba(168,168,168,0.60); color: white;"
                 >
                 </i>
             </div>

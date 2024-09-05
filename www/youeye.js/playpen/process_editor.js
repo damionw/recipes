@@ -12,9 +12,6 @@ function main_menu_handler(topic, payload) {
 
 function tabular_event(topic, payload) {
     switch(topic) {
-        case "update_table_row":
-            break;
-
         case "reload_data":
             get_process_info(this);
             break;
@@ -50,23 +47,27 @@ function dialog_event_handler(topic, payload) {
 function process_form_handler(topic, payload) {
     switch(topic) {
         case "save_process_info":
-            pubsubMessageRouter.singleton.emit(
-                "update_table_row", {
-                    "row": 0,
-                    "data": this.value
-                }
+            var row_object = this.selected_row;
+
+            const form_data = Object.fromEntries(
+                Object.entries(this.value).map(
+                    function([label, descriptor]) {
+                        return [descriptor.name, descriptor.value];
+                    }
+                )
             );
 
+            row_object.update(form_data);
             break;
 
         case "table_row_selected":
             var output_html = "<tr><td>Name</td><td>Value</td></tr>";
+            var row_object = this.selected_row = payload.row;
 
-            const rowdata = payload.data;
+            const row_data = row_object.getData();
+            const column_labels = Object.keys(row_data);
 
-            const column_labels = Object.keys(rowdata);
-
-            for (const [key, value] of Object.entries(rowdata)) {
+            for (const [key, value] of Object.entries(row_data)) {
                 const value_spec = '<td><textarea form-name="' + key + '" form-attribute="value">' + value + '</textarea></td>';
                 const key_spec = "<td>" + key + "</td>";
                 output_html += "<tr>" + key_spec + value_spec + "</tr>";
@@ -135,9 +136,12 @@ function load_table_data(target_element, data) {
         "rowDblClick", // "rowSelected", // "rowSelectionChanged",
 
         function(e, row_object){
+            console.log(row_object.getIndex());
+
             pubsubMessageRouter.singleton.emit(
                 "table_row_selected", {
-                    "data": row_object.getData()
+                    "row": row_object,
+                    "data": row_object.getData(),
                 }
             );
         }
