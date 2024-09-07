@@ -62,7 +62,7 @@ tabulator.js:
 # See: https://tabulator.info/
 # NOTE: See TABULATOR_MODE
 tabulator.css:
-	@wget $(WGET_OPTIONS) -nd -nH -O $@ https://unpkg.com/tabulator-tables@$(TABULATOR_VERSION)dist/css/tabulator$(if $(TABULATOR_MODE),_,)$(TABULATOR_MODE).min.css
+	@wget $(WGET_OPTIONS) -nd -nH -O $@ https://unpkg.com/tabulator-tables@$(TABULATOR_VERSION)/dist/css/tabulator$(if $(TABULATOR_MODE),_,)$(TABULATOR_MODE).min.css
 
 # See: https://github.com/andrepxx/pure-knob
 pureknob.js: checkouts/pureknob
