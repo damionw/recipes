@@ -61,7 +61,7 @@ function process_form_handler(topic, payload) {
             break;
 
         case "table_row_selected":
-            var output_html = "<tr><td>Name</td><td>Value</td></tr>";
+            var output_html = "<tr align=center><td>Name</td><td>Value</td></tr>";
             var row_object = this.selected_row = payload.row;
 
             const row_data = row_object.getData();
