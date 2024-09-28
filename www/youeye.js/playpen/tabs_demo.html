@@ -32,17 +32,38 @@
         ></ui-configuration>
 
         <ui-frame orientation="vertical" pad=false>
-            <ui-toolbar normal_background="#00c0ff">
-                <ui-button clickedsignal="select_panel_one">
+            <ui-toolbar normal_background="#00c0ff" pad="false">
+                <ui-button 
+                    clickedsignal="select_panel_one"
+                    subscribe="select_panel_one"
+                    listener="tabbed_button_handler"
+                >
                     One
                 </ui-button>
 
-                <ui-button clickedsignal="select_panel_two">
+                <ui-button
+                    clickedsignal="select_panel_two"
+                    subscribe="select_panel_two"
+                    listener="tabbed_button_handler"
+                >
                     Two
                 </ui-button>
 
-                <ui-button clickedsignal="select_panel_three">
+                <ui-button
+                    clickedsignal="select_panel_three"
+                    subscribe="select_panel_three"
+                    listener="tabbed_button_handler"
+                >
                     Three
+                </ui-button>
+
+                <ui-button
+                    clickedsignal="select_panel_four"
+                    subscribe="select_panel_four"
+                    listener="tabbed_button_handler"
+                    enabled=false
+                >
+                    Four
                 </ui-button>
             </ui-toolbar>
 
