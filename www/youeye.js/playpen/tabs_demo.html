@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US">
+    <head>
+        <title>YouEye Playpen : Tabs Demonstration</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="pragma" content="no-cache">
+
+        <link rel="stylesheet" href="font-awesome.css">
+
+        <script
+            type="application/javascript"
+            language="javascript"
+            src="youeye.js"
+        >
+        </script>
+
+        <script
+            type="application/javascript"
+            language="javascript"
+            src="tabs_demo.js"
+        >
+        </script>
+    </head>
+
+    <body>
+        <ui-configuration
+            application_background="#b0b0b0"
+            application_foreground="black"
+            toolbar_height=45px
+            padding="10px"
+        ></ui-configuration>
+
+        <ui-frame orientation="vertical" pad=false>
+            <ui-toolbar normal_background="#00c0ff">
+                <ui-button clickedsignal="select_panel_one">
+                    One
+                </ui-button>
+
+                <ui-button clickedsignal="select_panel_two">
+                    Two
+                </ui-button>
+
+                <ui-button clickedsignal="select_panel_three">
+                    Three
+                </ui-button>
+            </ui-toolbar>
+
+            <ui-frame orientation="horizontal" pad=false height=100%>
+                <ui-transient
+                    subscribe="select_panel_one"
+                    listener="tabbed_panel_handler"
+                    relative="true"
+                    normal_foreground="blue"
+                    normal_background="#e2eeee"
+                    height=100%
+                    width="100%"
+                >
+                    <ui-pane
+                        normal_background=#f0f0fe
+                        shadow_depth=5px
+                        border_radius=8px
+                        pad=false
+                        height=100%
+                        width=100%
+                    >
+                        One
+                    </ui-pane>
+                </ui-transient>
+
+                <ui-transient
+                    subscribe="select_panel_two"
+                    listener="tabbed_panel_handler"
+                    relative="true"
+                    normal_foreground="black"
+                    normal_background="#e2eeee"
+                    height=100%
+                    width="100%"
+                >
+                    <ui-pane
+                        normal_background=#f0f0fe
+                        shadow_depth=5px
+                        border_radius=8px
+                        pad=false
+                        height=100%
+                        width=100%
+                    >
+                        Two
+                    </ui-pane>
+                </ui-transient>
+
+                <ui-transient
+                    subscribe="select_panel_three"
+                    listener="tabbed_panel_handler"
+                    relative="true"
+                    normal_foreground="blue"
+                    normal_background="#e2eeee"
+                    height=100%
+                    width="100%"
+                >
+                    <ui-pane
+                        normal_background=#f0f0fe
+                        shadow_depth=5px
+                        border_radius=8px
+                        pad=false
+                        height=100%
+                        width=100%
+                    >
+                        Three
+                    </ui-pane>
+                </ui-transient>
+            </ui-frame>
+        </ui-frame>
+    </body>
+</html>
