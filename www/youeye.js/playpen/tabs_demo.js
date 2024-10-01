@@ -1,3 +1,15 @@
+function main_menu_handler(topic, payload) {
+    this.setAttribute(
+        "show", (
+            topic == "menu_hide" || (
+                topic == "menu_toggle" && this.getAttribute("show") == "true"
+            ) ?
+            "false" :
+            "true"
+        )
+    );
+}
+
 function tabbed_panel_handler(topic, payload) {
     [].slice.call(this.parentElement.children).forEach(
         function(element) {

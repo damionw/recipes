@@ -32,104 +32,159 @@
         ></ui-configuration>
 
         <ui-frame orientation="vertical" pad=false>
-            <ui-toolbar normal_background="#00c0ff" pad="false">
-                <ui-button 
-                    clickedsignal="select_panel_one"
-                    subscribe="select_panel_one"
-                    listener="tabbed_button_handler"
-                >
-                    One
-                </ui-button>
+            <ui-toolbar normal_background="#00c0ff">
+                <ui-toolbar width=100% normal_foreground=white justify=left pad=false>
+                    <ui-button clickedsignal="menu_toggle">
+                        <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
 
-                <ui-button
-                    clickedsignal="select_panel_two"
-                    subscribe="select_panel_two"
-                    listener="tabbed_button_handler"
-                >
-                    Two
-                </ui-button>
-
-                <ui-button
-                    clickedsignal="select_panel_three"
-                    subscribe="select_panel_three"
-                    listener="tabbed_button_handler"
-                >
-                    Three
-                </ui-button>
-
-                <ui-button
-                    clickedsignal="select_panel_four"
-                    subscribe="select_panel_four"
-                    listener="tabbed_button_handler"
-                    enabled=false
-                >
-                    Four
-                </ui-button>
+                        <ui-transient
+                            subscribe="menu_toggle,menu_show,menu_hide"
+                            listener="main_menu_handler"
+                            relative="true"
+                            normal_foreground="black"
+                            normal_background="#efefe0"
+                            y="50px"
+                            width="180px"
+                        >
+                            <ui-button highlight="-16" clickedsignal="show_file_menu">
+                                File...
+                            </ui-button>
+                        </ui-transient>
+                    </ui-button>
+                </ui-toolbar>
             </ui-toolbar>
 
-            <ui-frame orientation="horizontal" pad=false height=100%>
-                <ui-transient
-                    subscribe="select_panel_one"
-                    listener="tabbed_panel_handler"
-                    relative="true"
-                    normal_foreground="blue"
-                    normal_background="#e2eeee"
+            <ui-frame orientation="horizontal" pad=true>
+                <ui-pane
                     height=100%
-                    width="100%"
+                    normal_background=#f0f0fe
+                    shadow_depth=5px
+                    border_radius=8px
+                    pad=false
+                    width=150px
                 >
-                    <ui-pane
-                        normal_background=#f0f0fe
-                        shadow_depth=5px
-                        border_radius=8px
-                        pad=false
-                        height=100%
-                        width=100%
-                    >
-                        One
-                    </ui-pane>
-                </ui-transient>
+                    This
+                    <br>
+                    Is
+                    <br>
+                    it
+                </ui-pane>
 
-                <ui-transient
-                    subscribe="select_panel_two"
-                    listener="tabbed_panel_handler"
-                    relative="true"
-                    normal_foreground="black"
-                    normal_background="#e2eeee"
-                    height=100%
-                    width="100%"
-                >
+                <ui-frame orientation="vertical" pad=false>
                     <ui-pane
-                        normal_background=#f0f0fe
+                        height=100px
+                        normal_background=#fff0f0
                         shadow_depth=5px
                         border_radius=8px
-                        pad=false
-                        height=100%
-                        width=100%
                     >
-                        Two
+                        A lot of text goes here
                     </ui-pane>
-                </ui-transient>
 
-                <ui-transient
-                    subscribe="select_panel_three"
-                    listener="tabbed_panel_handler"
-                    relative="true"
-                    normal_foreground="blue"
-                    normal_background="#e2eeee"
-                    height=100%
-                    width="100%"
-                >
                     <ui-pane
-                        normal_background=#f0f0fe
-                        shadow_depth=5px
+                        normal_background=#d0d0d0
                         border_radius=8px
-                        pad=false
-                        height=100%
-                        width=100%
                     >
-                        Three
+                        <ui-toolbar pad=true>
+                            <ui-button
+                                clickedsignal="select_panel_one"
+                                subscribe="select_panel_one"
+                                listener="tabbed_button_handler"
+                            >
+                                One
+                            </ui-button>
+
+                            <ui-button
+                                clickedsignal="select_panel_two"
+                                subscribe="select_panel_two"
+                                listener="tabbed_button_handler"
+                            >
+                                Two
+                            </ui-button>
+
+                            <ui-button
+                                clickedsignal="select_panel_three"
+                                subscribe="select_panel_three"
+                                listener="tabbed_button_handler"
+                            >
+                                Three
+                            </ui-button>
+
+                            <ui-button
+                                clickedsignal="select_panel_four"
+                                subscribe="select_panel_four"
+                                listener="tabbed_button_handler"
+                                enabled=false
+                            >
+                                Four
+                            </ui-button>
+                        </ui-toolbar>
+
+                        <ui-frame orientation="horizontal" pad=true height=100%>
+                            <ui-transient
+                                subscribe="select_panel_one"
+                                listener="tabbed_panel_handler"
+                                relative="true"
+                                normal_foreground="blue"
+                                normal_background="#e2eeee"
+                                height=100%
+                                width="100%"
+                            >
+                                <ui-pane
+                                    normal_background=#f0f0fe
+                                    shadow_depth=5px
+                                    border_radius=8px
+                                    pad=false
+                                    height=100%
+                                    width=100%
+                                >
+                                    One
+                                </ui-pane>
+                            </ui-transient>
+
+                            <ui-transient
+                                subscribe="select_panel_two"
+                                listener="tabbed_panel_handler"
+                                relative="true"
+                                normal_foreground="black"
+                                normal_background="#e2eeee"
+                                height=100%
+                                width="100%"
+                            >
+                                <ui-pane
+                                    normal_background=#f0f0fe
+                                    shadow_depth=5px
+                                    border_radius=8px
+                                    pad=false
+                                    height=100%
+                                    width=100%
+                                >
+                                    Two
+                                </ui-pane>
+                            </ui-transient>
+
+                            <ui-transient
+                                subscribe="select_panel_three"
+                                listener="tabbed_panel_handler"
+                                relative="true"
+                                normal_foreground="blue"
+                                normal_background="#e2eeee"
+                                height=100%
+                                width="100%"
+                            >
+                                <ui-pane
+                                    normal_background=#f0f0fe
+                                    shadow_depth=5px
+                                    border_radius=8px
+                                    pad=false
+                                    height=100%
+                                    width=100%
+                                >
+                                    Three
+                                </ui-pane>
+                            </ui-transient>
+                        </ui-frame>
                     </ui-pane>
-                </ui-transient>
+                </ui-frame>
             </ui-frame>
         </ui-frame>
     </body>
