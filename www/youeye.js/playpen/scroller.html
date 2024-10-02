@@ -1,0 +1,75 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="en-US">
+    <head>
+        <title>YouEye Playpen : Scroller Demonstration</title>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <meta http-equiv="pragma" content="no-cache">
+
+        <link rel="stylesheet" href="font-awesome.css">
+
+        <script
+            type="application/javascript"
+            language="javascript"
+            src="youeye.js"
+        >
+        </script>
+
+        <script
+            type="application/javascript"
+            language="javascript"
+            src="scroller.js"
+        >
+        </script>
+    </head>
+
+    <body>
+        <ui-configuration
+            application_background="#b0b0b0"
+            application_foreground="black"
+            toolbar_height=45px
+            padding="10px"
+        ></ui-configuration>
+
+        <ui-frame orientation="vertical" pad=false>
+            <ui-toolbar normal_background="#00c0ff">
+                <ui-toolbar width=100% normal_foreground=white justify=left pad=false>
+                    <ui-button clickedsignal="menu_toggle">
+                        <i class="fa fa-bars fa-lg" aria-hidden="true"></i>
+
+                        <ui-transient
+                            subscribe="menu_toggle,menu_show,menu_hide"
+                            listener="main_menu_handler"
+                            relative="true"
+                            normal_foreground="black"
+                            normal_background="#efefe0"
+                            y="50px"
+                            width="180px"
+                        >
+                            <ui-button highlight="-16" clickedsignal="show_file_menu">
+                                File...
+                            </ui-button>
+                        </ui-transient>
+                    </ui-button>
+                </ui-toolbar>
+            </ui-toolbar>
+
+            <ui-frame orientation="horizontal" pad=true>
+                <ui-frame
+                    orientation="vertical"
+                    pad=true
+                    normal_background="#200020"
+                    width=150px
+                >
+                </ui-frame>
+
+                <ui-frame
+                    orientation="vertical"
+                    pad=false
+                    normal_background="#efefe0"
+                >
+                </ui-frame>
+            </ui-frame>
+        </ui-frame>
+    </body>
+</html>

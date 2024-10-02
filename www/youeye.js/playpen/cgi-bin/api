@@ -270,6 +270,12 @@ cgi::response::processes() {
     }"
 }
 
+cgi::response::selection_data() {
+    cgi::response_header 200 application/json
+    echo '['
+    echo ']'
+}
+
 #===================================================================================
 #                           CGI Entrypoint
 #===================================================================================
